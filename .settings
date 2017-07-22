@@ -6,18 +6,13 @@ Location=[34]
 Count=0
 
 [DebugWindow]
-Count=11
+Count=6
 DebugWindow[1]="vData"
-DebugWindow[2]="vData[\"city\"]"
-DebugWindow[3]="vData[\"list\"]"
-DebugWindow[4]="vData[\"list\"][0]"
-DebugWindow[5]="vData[\"list\"][1][\"main\"]"
-DebugWindow[6]="vData[\"list\"][0][\"weather\"]"
-DebugWindow[7]="vData[\"list\"][0][\"weather\"][0]"
-DebugWindow[8]="sTime"
-DebugWindow[9]="sDescription"
-DebugWindow[10]="sIcon"
-DebugWindow[11]="sCountries"
+DebugWindow[2]="vData[\"list\"]"
+DebugWindow[3]="vData[\"list\"][0]"
+DebugWindow[4]="vData[\"list\"][0][\"main\"]"
+DebugWindow[5]="vData[\"list\"][0][\"clouds\"]"
+DebugWindow[6]="vData[\"list\"][0][\"wind\"]"
 
 [DebugWindow/Media]
 Geometry=[0,14,224,280]
@@ -101,25 +96,34 @@ Geometry=[-8,-8,224,993]
 Geometry=[925,215,224,280]
 
 [DebugWindow/vData]
-Geometry=[1551,8,245,740]
+Geometry=[733,481,245,280]
 
 [DebugWindow/vData["city"]]
-Geometry=[1230,48,245,740]
+Geometry=[855,52,245,740]
 
 [DebugWindow/vData["city"]["coord"]]
 Geometry=[1523,257,245,740]
 
 [DebugWindow/vData["list"]]
-Geometry=[1343,377,245,740]
+Geometry=[982,474,245,280]
 
 [DebugWindow/vData["list"][0]]
-Geometry=[1273,278,245,740]
+Geometry=[1427,240,245,280]
+
+[DebugWindow/vData["list"][0]["clouds"]]
+Geometry=[1178,433,245,280]
+
+[DebugWindow/vData["list"][0]["main"]]
+Geometry=[1451,94,245,280]
 
 [DebugWindow/vData["list"][0]["weather"]]
-Geometry=[1287,292,245,740]
+Geometry=[1618,464,245,740]
 
 [DebugWindow/vData["list"][0]["weather"][0]]
-Geometry=[1301,306,245,740]
+Geometry=[990,397,245,740]
+
+[DebugWindow/vData["list"][0]["wind"]]
+Geometry=[1488,443,245,280]
 
 [DebugWindow/vData["list"][1]]
 Geometry=[1514,267,245,740]
@@ -155,14 +159,13 @@ Geometry=[1406,50,224,713]
 Geometry=[991,56,245,740]
 
 [OpenFile]
-File[1]=".src/FMain.class:0.36"
-Active=3
+File[1]=".src/FMain.class:0.55"
+Active=1
 File[2]=".src/FMain.form"
-Count=6
+Count=5
 File[3]=".src/Location.form"
 File[4]=".src/Location.class:0.90"
-File[5]=".src/Weather.class:3.16"
-File[6]="cities.csv:0.0"
+File[5]=".src/Weather.class:19.6"
 
 [Watches]
 Count=2

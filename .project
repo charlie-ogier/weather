@@ -1,7 +1,7 @@
 # Gambas Project File 3.0
 # Compiled with Gambas 3.9.2
 Title=Weather
-Startup=Location
+Startup=FMain
 Icon=weathericon.png
 Version=0.0.1
 Component=gb.image

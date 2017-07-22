@@ -1,6 +1,6 @@
 ' Gambas class file
 
-Static Public Sub Get()
+Static Public Sub Get() As Variant
 Dim sResult As String
 Dim hClient As HttpClient
 
@@ -13,5 +13,6 @@ hClient.get
 If Lof(hClient) Then sResult = Read #hClient, Lof(hClient)
 
 FMain.vData = JSON.Decode(sResult)
+'Return sResult
 
 End

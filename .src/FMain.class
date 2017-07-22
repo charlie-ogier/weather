@@ -7,6 +7,8 @@ Public vData As Variant
 sDescription As New String[]
 sTime As New String[]
 sIcon As New String[]
+sTempMin As New String[]
+sTempMax As New String[]
 
 Public Sub Form_Open()
 
@@ -19,6 +21,7 @@ Dim sResult, sTemp As String
 Dim siCount As Short
 Dim bOnce As Boolean
 
+
 Weather.Get
 
 LabelCity.text = vData["city"]["name"]
@@ -29,6 +32,8 @@ For siCount = 0 To vData["list"].max
   sTime.add(vData["list"][siCount]["dt_txt"])
   sDescription.Add(vData["list"][siCount]["weather"][0]["description"])
   sIcon.Add(vData["list"][siCount]["weather"][0]["icon"])
+  sTempMin.add(vData["list"][0]["main"]["temp_min"])
+  sTempMax.add(vData["list"][0]["main"]["temp_max"])
 Next
 
 SliderTime.MaxValue = vData["list"].max
@@ -72,7 +77,8 @@ Next
 LabelTime2.text = Format(Date(sD[0], Val(sD[1]), Val(sD[2]), Val(sD[3]), Val(sD[4]), Val(sD[5])), "dddd dd mmmm yyyy - hh:nn:ss")
 LabelDesc2.Text = UCase(Left(sDescription[SliderTime.value], 1)) & Mid(sDescription[SliderTime.value], 2)
 PictureBoxIcon.Picture = Picture.Load("/tmp" &/ sIcon[SliderTime.value] & ".png")
-
+LabelTempMax1.text = Str(Int(Val(sTempMax[SliderTime.value]) - 273.15))
+LabelTempMin1.text = Str(Int(Val(sTempMin[SliderTime.value]) - 273.15))
 
 End
 
