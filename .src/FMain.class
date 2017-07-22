@@ -1,0 +1,83 @@
+' Gambas class file
+
+hClient As HttpClient
+hClient1 As HttpClient
+Public sWID As String = Settings["WID", "6620380"]
+Public vData As Variant
+sDescription As New String[]
+sTime As New String[]
+sIcon As New String[]
+
+Public Sub Form_Open()
+
+Start
+
+End
+
+Public Sub Start()
+Dim sResult, sTemp As String
+Dim siCount As Short
+Dim bOnce As Boolean
+
+Weather.Get
+
+LabelCity.text = vData["city"]["name"]
+LabelLat.text = vData["city"]["coord"]["lat"]
+LabelLong.text = vData["city"]["coord"]["lon"]
+
+For siCount = 0 To vData["list"].max
+  sTime.add(vData["list"][siCount]["dt_txt"])
+  sDescription.Add(vData["list"][siCount]["weather"][0]["description"])
+  sIcon.Add(vData["list"][siCount]["weather"][0]["icon"])
+Next
+
+SliderTime.MaxValue = vData["list"].max
+SliderTime_Change
+'Stop
+
+
+End
+
+Public Sub Form_Close()
+
+Settings["WID"] = sWID
+
+End
+
+Public Sub ToolButton1_Click()
+
+Location.ShowModal
+Start
+
+End
+
+Public Sub SliderTime_Change()
+Dim sDate, sTemp As String
+Dim sD As New String[]
+
+If Not Exist("/tmp" &/ sIcon[SliderTime.value] & ".png") Then
+  Shell "cd /tmp && wget http://openweathermap.org/img/w/" & sIcon[SliderTime.value] & ".png" Wait 
+Endif
+
+sDate = Replace(sTime[SliderTime.value], "-", ",")
+sDate = Replace(sDate, ":", ",")
+sDate = Replace(sDate, " ", ",")
+
+For Each sTemp In Split(sDate)
+  sD.Add(sTemp)
+Next
+
+
+
+LabelTime2.text = Format(Date(sD[0], Val(sD[1]), Val(sD[2]), Val(sD[3]), Val(sD[4]), Val(sD[5])), "dddd dd mmmm yyyy - hh:nn:ss")
+LabelDesc2.Text = UCase(Left(sDescription[SliderTime.value], 1)) & Mid(sDescription[SliderTime.value], 2)
+PictureBoxIcon.Picture = Picture.Load("/tmp" &/ sIcon[SliderTime.value] & ".png")
+
+
+End
+
+Public Sub Panel8_MouseDown()
+
+  
+
+End

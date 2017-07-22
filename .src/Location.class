@@ -1,0 +1,137 @@
+' Gambas class file
+
+sData As New String[]
+iID As Integer
+iLastRow As Integer = -1
+
+Public Sub Form_Open()
+Dim sTemp, sHold As String
+Dim sCountries As New String[]
+
+For Each sTemp In Split(File.Load("../cities.csv"), gb.NewLine)
+  If Not sTemp Then Continue
+  sData.Add(sTemp)
+Next
+
+For Each sTemp In sData
+  sCountries.Add(Split(sTemp)[1])
+Next
+
+sCountries.Sort()
+
+For Each sTemp In sCountries
+  If sTemp = "" Or sTemp = sHold Then Continue
+  sHold = sTemp
+  ComboBoxCountry.Add(sTemp)
+Next
+
+End
+
+' Public Sub TextBoxSearch_Change()
+' 
+' If TextBoxSearch.text Then 
+'   ButtonSearch.Enabled = True
+' Else
+'   ButtonSearch.Enabled = False
+' End If
+' 
+' End
+
+Public Sub ButtonSearch_Click()
+Dim sTemp As String
+Dim sFound As New String[]
+Dim iCount As Integer = 1
+Dim byCount As Byte
+
+HBoxProgress.Visible = True
+Wait 0.01
+
+LabelSelect.text = ""
+GridViewSearch.clear
+If CheckBoxCountry.value = False And Len(TextBoxSearch.text) < 2 Then Return
+
+
+If CheckBoxCountry.Value = False Then
+  For Each sTemp In sData
+    PanelProgress.Width = (HBoxProgress.Width / 100) * (icount / sData.max) * 100
+    Wait
+    If InStr(UCase(sTemp), UCase(Trim(TextBoxSearch.text))) Then sFound.Add(sTemp)
+    Inc iCount
+  Next
+Else
+  For Each sTemp In sData
+    PanelProgress.Width = (HBoxProgress.Width / 100) * (icount / sData.max) * 100
+    Wait
+    If InStr(UCase(Split(sTemp)[1]), UCase(ComboBoxCountry.Text)) Then sFound.Add(sTemp)
+    Inc iCount
+  Next
+End If
+
+If sFound.max > 0 Then LabelSelect.text = "Select your location" Else LabelSelect.text = ""
+
+With GridViewSearch
+  .Columns.count = 6
+  .Rows.count = sFound.count
+  .Columns[0].Title = "ID "
+  .Columns[1].Title = "Country "
+  .Columns[2].Title = "City "
+  .Columns[3].Title = "Extra details "
+End With
+
+For iCount = 0 To sFound.Max
+  For Each sTemp In Split(sFound[icount])
+    GridViewSearch[iCount, byCount].text = sTemp & " "
+    Inc byCount
+  Next
+  byCount = 0
+Next
+
+LabelStats.text = Str(sFound.Count) & " matches from " & Str(sData.Count) & " locations"
+GridViewSearch.Columns.Width = -1
+HBoxProgress.Visible = False
+Wait 0.01
+
+End
+
+Public Sub GridViewSearch_Click()
+Dim siCount As Short
+
+iID = Val(GridViewSearch[Last.row, 0].text)
+LabelChoosen.text = GridViewSearch[Last.row, 2].text
+ButtonSave.Enabled = True
+
+For siCount = 0 To 4
+  GridViewSearch[Last.Row, siCount].Background = Color.LightBackground
+  If iLastRow <> -1 Then GridViewSearch[iLastRow, siCount].Background = Color.Default
+Next
+
+iLastRow = Last.Row
+
+End
+
+Public Sub ButtonCancel_Click()
+
+Me.Close
+
+End
+
+Public Sub ButtonSave_Click()
+
+FMain.sWID = Trim(GridViewSearch[iLastRow, 0].Text)
+Me.Close
+
+End
+
+Public Sub CheckBoxCountry_Click()
+
+If CheckBoxCountry.Value = True Then
+  ComboBoxCountry.Visible = True
+  TextBoxSearch.Visible = False
+  LabelSearch.Text = "Select country code "
+Else
+  ComboBoxCountry.Visible = False
+  TextBoxSearch.Visible = True
+  LabelSearch.Text = "Enter your location "
+Endif
+
+End

@@ -1,0 +1,17 @@
+' Gambas class file
+
+Static Public Sub Get()
+Dim sResult As String
+Dim hClient As HttpClient
+
+hClient = New HttpClient As "hClient"
+hClient.URL = "http://api.openweathermap.org/data/2.5/forecast?id=" & FMain.sWID & "&uk&APPID=bdb074a3b2f71d852f294da2e596c18f"
+hClient.Async = False
+hClient.TimeOut = 60
+hClient.get
+
+If Lof(hClient) Then sResult = Read #hClient, Lof(hClient)
+
+FMain.vData = JSON.Decode(sResult)
+
+End

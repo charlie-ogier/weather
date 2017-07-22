@@ -1,0 +1,16 @@
+Location
+Weather
+0
+0
+0.0.1
+
+gb.image
+gb.gui
+gb.form
+gb.dbus
+gb.settings
+gb.gui.trayicon
+gb.net
+gb.net.curl
+gb.web
+
