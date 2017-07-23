@@ -9,10 +9,13 @@ sTime As New String[]
 sIcon As New String[]
 sTempMin As New String[]
 sTempMax As New String[]
+sPressure As New String[]
+sWindSpeed As New String[]
+sWindDir As New String[]
 
 Public Sub Form_Open()
 
-Start
+TimerGetWeather.Start
 
 End
 
@@ -21,8 +24,18 @@ Dim sResult, sTemp As String
 Dim siCount As Short
 Dim bOnce As Boolean
 
+sDescription.clear
+sTime.clear
+sIcon.clear
+sTempMin.clear
+sTempMax.clear
+sTime.clear
+sIcon.clear
+sPressure.clear
+sWindSpeed.clear
+sWindDir.clear
 
-Weather.Get
+vData = GetWeather()
 
 LabelCity.text = vData["city"]["name"]
 LabelLat.text = vData["city"]["coord"]["lat"]
@@ -32,14 +45,16 @@ For siCount = 0 To vData["list"].max
   sTime.add(vData["list"][siCount]["dt_txt"])
   sDescription.Add(vData["list"][siCount]["weather"][0]["description"])
   sIcon.Add(vData["list"][siCount]["weather"][0]["icon"])
-  sTempMin.add(vData["list"][0]["main"]["temp_min"])
-  sTempMax.add(vData["list"][0]["main"]["temp_max"])
+  sTempMin.add(vData["list"][siCount]["main"]["temp_min"])
+  sTempMax.add(vData["list"][siCount]["main"]["temp_max"])
+  sPressure.add(vData["list"][siCount]["main"]["pressure"])
+  sWindSpeed.add(vData["list"][siCount]["wind"]["speed"])
+  sWindDir.add(vData["list"][siCount]["wind"]["deg"])
 Next
 
 SliderTime.MaxValue = vData["list"].max
 SliderTime_Change
 'Stop
-
 
 End
 
@@ -72,18 +87,52 @@ For Each sTemp In Split(sDate)
   sD.Add(sTemp)
 Next
 
-
-
 LabelTime2.text = Format(Date(sD[0], Val(sD[1]), Val(sD[2]), Val(sD[3]), Val(sD[4]), Val(sD[5])), "dddd dd mmmm yyyy - hh:nn:ss")
 LabelDesc2.Text = UCase(Left(sDescription[SliderTime.value], 1)) & Mid(sDescription[SliderTime.value], 2)
 PictureBoxIcon.Picture = Picture.Load("/tmp" &/ sIcon[SliderTime.value] & ".png")
-LabelTempMax1.text = Str(Int(Val(sTempMax[SliderTime.value]) - 273.15))
-LabelTempMin1.text = Str(Int(Val(sTempMin[SliderTime.value]) - 273.15))
+LabelTempMax1.text = "Max " & Str(Int(Val(sTempMax[SliderTime.value]) - 273.15)) & "ºC"
+LabelTempMin1.text = "Min " & Str(Int(Val(sTempMin[SliderTime.value]) - 273.15)) & "ºC"
+LabelPressure.text = "Pressure " & Format(sPressure[SliderTime.value], "0000")
+LabelWindDir.text = "Wind\n" & WindDirection(Val(sWindDir[SliderTime.value])) & "\n" & Format(Str(Val(sWindSpeed[SliderTime.Value]) * 2.23694), "#") & " mph"
+PictureBoxWind.Picture = Picture.Load("../" &/ WindDirection(Val(sWindDir[SliderTime.value])) & ".png")
 
 End
 
-Public Sub Panel8_MouseDown()
+Public Sub GetWeather() As Variant
+Dim sResult As String
+Dim hClient As HttpClient
 
-  
+hClient = New HttpClient As "hClient"
+hClient.URL = "http://api.openweathermap.org/data/2.5/forecast?id=" & FMain.sWID & "&uk&APPID=bdb074a3b2f71d852f294da2e596c18f"
+hClient.Async = False
+hClient.TimeOut = 60
+hClient.get
+
+If Lof(hClient) Then sResult = Read #hClient, Lof(hClient)
+
+Return JSON.Decode(sResult)
 
 End
+
+Public Sub TimerGetWeather_Timer()
+
+Start
+TimerGetWeather.Delay = 60000
+
+End
+
+Public Sub WindDirection(fDeg As Float) As String
+Dim sDir As String[] = ["North", "Northeast", "East", "Southeast", "South", "Southwest", "West", "Northwest", "North"] 
+
+Dim siCalc As Short
+
+If fDeg = 0 Or fDeg = 360 Then 
+  siCalc = 0
+Else
+  siCalc = (fDeg / 45) + 0.5
+Endif
+
+Return sDir[siCalc]
+
+End
+

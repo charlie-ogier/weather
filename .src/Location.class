@@ -19,23 +19,17 @@ Next
 
 sCountries.Sort()
 
+ComboBoxCountry.Add(" ")
+
 For Each sTemp In sCountries
   If sTemp = "" Or sTemp = sHold Then Continue
   sHold = sTemp
   ComboBoxCountry.Add(sTemp)
 Next
 
-End
+TextBoxSearch.SetFocus
 
-' Public Sub TextBoxSearch_Change()
-' 
-' If TextBoxSearch.text Then 
-'   ButtonSearch.Enabled = True
-' Else
-'   ButtonSearch.Enabled = False
-' End If
-' 
-' End
+End
 
 Public Sub ButtonSearch_Click()
 Dim sTemp As String
@@ -62,7 +56,7 @@ Else
   For Each sTemp In sData
     PanelProgress.Width = (HBoxProgress.Width / 100) * (icount / sData.max) * 100
     Wait
-    If InStr(UCase(Split(sTemp)[1]), UCase(ComboBoxCountry.Text)) Then sFound.Add(sTemp)
+    If InStr(UCase(Split(sTemp)[1]), UCase(Trim(ComboBoxCountry.Text))) Then sFound.Add(sTemp)
     Inc iCount
   Next
 End If
@@ -87,6 +81,7 @@ For iCount = 0 To sFound.Max
 Next
 
 LabelStats.text = Str(sFound.Count) & " matches from " & Str(sData.Count) & " locations"
+Wait
 GridViewSearch.Columns.Width = -1
 HBoxProgress.Visible = False
 Wait 0.01
@@ -102,10 +97,17 @@ ButtonSave.Enabled = True
 
 For siCount = 0 To 4
   GridViewSearch[Last.Row, siCount].Background = Color.LightBackground
-  If iLastRow <> -1 Then GridViewSearch[iLastRow, siCount].Background = Color.Default
+  If iLastRow <> -1 And iLastRow <> Last.row Then GridViewSearch[iLastRow, siCount].Background = Color.Default
 Next
 
 iLastRow = Last.Row
+
+End
+
+Public Sub GridViewSearch_DblClick()
+
+iID = Val(GridViewSearch[Last.row, 0].text)
+ButtonSave_Click
 
 End
 
@@ -128,10 +130,32 @@ If CheckBoxCountry.Value = True Then
   ComboBoxCountry.Visible = True
   TextBoxSearch.Visible = False
   LabelSearch.Text = "Select country code "
+  ComboBoxCountry.SetFocus
 Else
   ComboBoxCountry.Visible = False
   TextBoxSearch.Visible = True
   LabelSearch.Text = "Enter your location "
+  TextBoxSearch.SetFocus
 Endif
+
+End
+
+Public Sub ComboBoxCountry_Change()
+
+ComboBoxCountry.text = UCase(ComboBoxCountry.text)
+
+End
+
+Public Sub ComboBoxCountry_KeyRelease()
+
+If Key.code = Key.Enter Or Key.code = Key.Return Then ButtonSearch_Click
+
+End
+
+Public Sub TextBoxSearch_KeyRelease()
+
+If Key.code = Key.Enter Or Key.code = Key.Return Then ButtonSearch_Click
+
+  
 
 End

@@ -6,13 +6,16 @@ Location=[34]
 Count=0
 
 [DebugWindow]
-Count=6
+Count=9
 DebugWindow[1]="vData"
 DebugWindow[2]="vData[\"list\"]"
 DebugWindow[3]="vData[\"list\"][0]"
 DebugWindow[4]="vData[\"list\"][0][\"main\"]"
-DebugWindow[5]="vData[\"list\"][0][\"clouds\"]"
-DebugWindow[6]="vData[\"list\"][0][\"wind\"]"
+DebugWindow[5]="vData[\"list\"][0][\"wind\"]"
+DebugWindow[6]="sPressure"
+DebugWindow[7]="vData[\"city\"]"
+DebugWindow[8]="sWindDir"
+DebugWindow[9]="sWindSpeed"
 
 [DebugWindow/Media]
 Geometry=[0,14,224,280]
@@ -80,6 +83,12 @@ Geometry=[-9,-8,257,515]
 [DebugWindow/sIcon]
 Geometry=[-8,398,224,280]
 
+[DebugWindow/sPressure]
+Geometry=[0,14,224,900]
+
+[DebugWindow/sTempMax]
+Geometry=[-8,6,224,938]
+
 [DebugWindow/sTest]
 Geometry=[1010,92,224,280]
 
@@ -92,29 +101,35 @@ Geometry=[1471,84,224,280]
 [DebugWindow/sTime]
 Geometry=[-8,-8,224,993]
 
+[DebugWindow/sWindDir]
+Geometry=[-8,120,224,640]
+
+[DebugWindow/sWindSpeed]
+Geometry=[-8,239,224,280]
+
 [DebugWindow/siRate]
 Geometry=[925,215,224,280]
 
 [DebugWindow/vData]
-Geometry=[733,481,245,280]
+Geometry=[1354,227,245,280]
 
 [DebugWindow/vData["city"]]
-Geometry=[855,52,245,740]
+Geometry=[1163,6,245,280]
 
 [DebugWindow/vData["city"]["coord"]]
 Geometry=[1523,257,245,740]
 
 [DebugWindow/vData["list"]]
-Geometry=[982,474,245,280]
+Geometry=[1421,307,245,280]
 
 [DebugWindow/vData["list"][0]]
-Geometry=[1427,240,245,280]
+Geometry=[1663,1,245,280]
 
 [DebugWindow/vData["list"][0]["clouds"]]
-Geometry=[1178,433,245,280]
+Geometry=[1170,96,245,280]
 
 [DebugWindow/vData["list"][0]["main"]]
-Geometry=[1451,94,245,280]
+Geometry=[1414,1,245,280]
 
 [DebugWindow/vData["list"][0]["weather"]]
 Geometry=[1618,464,245,740]
@@ -123,7 +138,7 @@ Geometry=[1618,464,245,740]
 Geometry=[990,397,245,740]
 
 [DebugWindow/vData["list"][0]["wind"]]
-Geometry=[1488,443,245,280]
+Geometry=[1678,280,245,280]
 
 [DebugWindow/vData["list"][1]]
 Geometry=[1514,267,245,740]
@@ -136,6 +151,12 @@ Geometry=[1113,50,470,851]
 
 [DebugWindow/vData["list"][1]["weather"][0]]
 Geometry=[1119,56,470,851]
+
+[DebugWindow/vData["list"][20]]
+Geometry=[930,93,245,280]
+
+[DebugWindow/vData["list"][20]["main"]]
+Geometry=[931,179,245,280]
 
 [DebugWindow/vData["list"][34]]
 Geometry=[1107,44,470,851]
@@ -159,13 +180,12 @@ Geometry=[1406,50,224,713]
 Geometry=[991,56,245,740]
 
 [OpenFile]
-File[1]=".src/FMain.class:0.55"
-Active=1
+File[1]=".src/FMain.class:0.97"
+Active=4
 File[2]=".src/FMain.form"
-Count=5
+Count=4
 File[3]=".src/Location.form"
-File[4]=".src/Location.class:0.90"
-File[5]=".src/Weather.class:19.6"
+File[4]=".src/Location.class:13.79"
 
 [Watches]
 Count=2
