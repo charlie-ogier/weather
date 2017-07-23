@@ -48,8 +48,9 @@
     }
   }
   { GridViewSearch GridView
-    MoveScaled(13,16,41,36)
+    MoveScaled(14,16,41,36)
     Expand = True
+    Mode = Select.Single
     Padding = 0
     Header = GridView.Horizontal
   }

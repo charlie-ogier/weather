@@ -1,5 +1,5 @@
 [Bookmarks]
-FMain=[15]
+FMain=[15,174]
 Location=[34]
 
 [Breakpoints]
@@ -111,7 +111,7 @@ Geometry=[-8,239,224,280]
 Geometry=[925,215,224,280]
 
 [DebugWindow/vData]
-Geometry=[1354,227,245,280]
+Geometry=[1561,130,245,280]
 
 [DebugWindow/vData["city"]]
 Geometry=[1163,6,245,280]
@@ -120,7 +120,7 @@ Geometry=[1163,6,245,280]
 Geometry=[1523,257,245,740]
 
 [DebugWindow/vData["list"]]
-Geometry=[1421,307,245,280]
+Geometry=[1663,493,245,280]
 
 [DebugWindow/vData["list"][0]]
 Geometry=[1663,1,245,280]
@@ -180,12 +180,12 @@ Geometry=[1406,50,224,713]
 Geometry=[991,56,245,740]
 
 [OpenFile]
-File[1]=".src/FMain.class:0.97"
-Active=4
+File[1]=".src/FMain.class:0.166"
+Active=1
 File[2]=".src/FMain.form"
 Count=4
 File[3]=".src/Location.form"
-File[4]=".src/Location.class:13.79"
+File[4]=".src/Location.class:0.91"
 
 [Watches]
 Count=2

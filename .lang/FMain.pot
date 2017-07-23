@@ -5,28 +5,28 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: $(PACKAGE) $(VERSION)\n"
-"POT-Creation-Date: 2017-07-23 16:18 UTC\n"
+"POT-Creation-Date: 2017-07-23 19:29 UTC\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: FMain.form:52
+#: FMain.form:60
 msgid "Select your location"
 msgstr ""
 
-#: FMain.form:66
+#: FMain.form:74
 msgid "Location"
 msgstr ""
 
-#: FMain.form:87
-msgid "Latitude"
+#: FMain.form:94
+msgid "Latitude "
 msgstr ""
 
-#: FMain.form:108
+#: FMain.form:110
 msgid "Longitude"
 msgstr ""
 
-#: FMain.form:230
+#: FMain.form:252
 msgid "Slide to change the time/date"
 msgstr ""
 

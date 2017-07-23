@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: $(PACKAGE) $(VERSION)\n"
-"POT-Creation-Date: 2017-07-23 16:26 UTC\n"
+"POT-Creation-Date: 2017-07-23 18:58 UTC\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -26,11 +26,11 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-#: Location.form:93
+#: Location.form:94
 msgid "Cancel"
 msgstr ""
 
-#: Location.form:119
+#: Location.form:120
 msgid "Save"
 msgstr ""
 

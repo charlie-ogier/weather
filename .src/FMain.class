@@ -1,7 +1,6 @@
 ' Gambas class file
 
-hClient As HttpClient
-hClient1 As HttpClient
+bLR As Boolean
 Public sWID As String = Settings["WID", "6620380"]
 Public vData As Variant
 sDescription As New String[]
@@ -20,9 +19,7 @@ TimerGetWeather.Start
 End
 
 Public Sub Start()
-Dim sResult, sTemp As String
 Dim siCount As Short
-Dim bOnce As Boolean
 
 sDescription.clear
 sTime.clear
@@ -54,7 +51,6 @@ Next
 
 SliderTime.MaxValue = vData["list"].max
 SliderTime_Change
-'Stop
 
 End
 
@@ -72,7 +68,7 @@ Start
 End
 
 Public Sub SliderTime_Change()
-Dim sDate, sTemp As String
+Dim sDate, sTemp, sOrd As String
 Dim sD As New String[]
 
 If Not Exist("/tmp" &/ sIcon[SliderTime.value] & ".png") Then
@@ -135,4 +131,48 @@ Endif
 Return sDir[siCalc]
 
 End
+
+
+Public Sub PictureBoxArrowRight_Enter()
+
+bLR = True
+TimerSlider.Delay = 1
+TimerSlider.Start
+
+End
+
+Public Sub PictureBoxArrowLeft_Enter()
+
+bLR = False
+TimerSlider.Delay = 1
+TimerSlider.Start
+
+End
+
+Public Sub PictureBoxArrowLeft_Leave()
+  
+TimerSlider.Stop  
+TimerSlider.Delay = 1
+
+End
+
+Public Sub PictureBoxArrowRight_Leave()
+  
+TimerSlider.Stop  
+TimerSlider.Delay = 1
+
+End
+
+Public Sub TimerSlider_Timer()
+
+If bLR Then
+  Inc SliderTime.Value
+Else
+  Dec SliderTime.Value
+End If
+TimerSlider.Delay = 1000
+
+End
+
+
 

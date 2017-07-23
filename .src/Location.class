@@ -89,16 +89,10 @@ Wait 0.01
 End
 
 Public Sub GridViewSearch_Click()
-Dim siCount As Short
 
 iID = Val(GridViewSearch[Last.row, 0].text)
 LabelChoosen.text = GridViewSearch[Last.row, 2].text
 ButtonSave.Enabled = True
-
-For siCount = 0 To 4
-  GridViewSearch[Last.Row, siCount].Background = Color.LightBackground
-  If iLastRow <> -1 And iLastRow <> Last.row Then GridViewSearch[iLastRow, siCount].Background = Color.Default
-Next
 
 iLastRow = Last.Row
 
