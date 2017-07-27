@@ -6,16 +6,9 @@ Location=[34]
 Count=0
 
 [DebugWindow]
-Count=9
-DebugWindow[1]="vData"
-DebugWindow[2]="vData[\"list\"]"
-DebugWindow[3]="vData[\"list\"][0]"
-DebugWindow[4]="vData[\"list\"][0][\"main\"]"
-DebugWindow[5]="vData[\"list\"][0][\"wind\"]"
-DebugWindow[6]="sPressure"
-DebugWindow[7]="vData[\"city\"]"
-DebugWindow[8]="sWindDir"
-DebugWindow[9]="sWindSpeed"
+Count=2
+DebugWindow[1]="sWindDir"
+DebugWindow[2]="sWindSpeed"
 
 [DebugWindow/Media]
 Geometry=[0,14,224,280]
@@ -114,7 +107,7 @@ Geometry=[925,215,224,280]
 Geometry=[1561,130,245,280]
 
 [DebugWindow/vData["city"]]
-Geometry=[1163,6,245,280]
+Geometry=[1122,55,245,280]
 
 [DebugWindow/vData["city"]["coord"]]
 Geometry=[1523,257,245,740]
@@ -180,12 +173,12 @@ Geometry=[1406,50,224,713]
 Geometry=[991,56,245,740]
 
 [OpenFile]
-File[1]=".src/FMain.class:0.166"
-Active=1
+File[1]=".src/FMain.class:2.110"
+Active=4
 File[2]=".src/FMain.form"
 Count=4
 File[3]=".src/Location.form"
-File[4]=".src/Location.class:0.91"
+File[4]=".src/Location.class:21.2"
 
 [Watches]
 Count=2

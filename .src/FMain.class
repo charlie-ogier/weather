@@ -83,7 +83,7 @@ For Each sTemp In Split(sDate)
   sD.Add(sTemp)
 Next
 
-LabelTime2.text = Format(Date(sD[0], Val(sD[1]), Val(sD[2]), Val(sD[3]), Val(sD[4]), Val(sD[5])), "dddd dd mmmm yyyy - hh:nn:ss")
+LabelTime2.text = Format(Date(sD[0], Val(sD[1]), Val(sD[2]), Val(sD[3]), Val(sD[4]), Val(sD[5])), "dddd d mmmm yyyy - hh:nn:ss")
 LabelDesc2.Text = UCase(Left(sDescription[SliderTime.value], 1)) & Mid(sDescription[SliderTime.value], 2)
 PictureBoxIcon.Picture = Picture.Load("/tmp" &/ sIcon[SliderTime.value] & ".png")
 LabelTempMax1.text = "Max " & Str(Int(Val(sTempMax[SliderTime.value]) - 273.15)) & "ºC"
