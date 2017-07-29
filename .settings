@@ -1,5 +1,5 @@
 [Bookmarks]
-FMain=[15,174]
+FMain=[15,97,180]
 Location=[34]
 
 [Breakpoints]
@@ -95,10 +95,10 @@ Geometry=[1471,84,224,280]
 Geometry=[-8,-8,224,993]
 
 [DebugWindow/sWindDir]
-Geometry=[-8,120,224,640]
+Geometry=[-8,112,224,640]
 
 [DebugWindow/sWindSpeed]
-Geometry=[-8,239,224,280]
+Geometry=[-8,231,224,280]
 
 [DebugWindow/siRate]
 Geometry=[925,215,224,280]
@@ -172,13 +172,20 @@ Geometry=[1406,50,224,713]
 [DebugWindow/vData[1]]
 Geometry=[991,56,245,740]
 
+[Executable]
+Path="weather.gambas"
+
 [OpenFile]
-File[1]=".src/FMain.class:2.110"
-Active=4
+File[1]=".src/FMain.class:10.177"
+Active=7
 File[2]=".src/FMain.form"
-Count=4
+Count=8
 File[3]=".src/Location.form"
-File[4]=".src/Location.class:21.2"
+File[4]=".src/Location.class:0.115"
+File[5]=".src/Preferences.form"
+File[6]=".src/Preferences.class:0.1"
+File[7]=".src/About.form"
+File[8]=".src/About.class:0.11"
 
 [Watches]
 Count=2

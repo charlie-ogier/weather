@@ -7,14 +7,34 @@
   Padding = 10
   { HBox1 HBox
     MoveScaled(0,0,44,4)
-    { ToolButton1 ToolButton
+    { ToolButtonLocation ToolButton
       MoveScaled(1,0,4,4)
       ToolTip = ("Select your location")
       Picture = Picture["icon:/22/internet"]
     }
+    { Panel11 Panel
+      MoveScaled(6,1,1,2)
+    }
+    { ToolButtonPreferences ToolButton
+      MoveScaled(7,0,4,4)
+      ToolTip = ("Preferences")
+      Picture = Picture["icon:/22/options"]
+    }
+    { Panel12 Panel
+      MoveScaled(12,1,1,2)
+    }
+    { ToolButtonAbout ToolButton
+      MoveScaled(13,0,4,4)
+      ToolTip = ("Preferences")
+      Picture = Picture["icon:/22/info"]
+    }
+  }
+  { Separator5 Separator
+    MoveScaled(1,5,9,0)
+    Background = Color.Black
   }
   { VBox1 VBox
-    MoveScaled(-3,5,51,8)
+    MoveScaled(-3,6,51,8)
     { HBox2 HBox
       MoveScaled(0,1,32,3)
       { LabelCity0 Label
@@ -62,7 +82,7 @@
     }
   }
   { HBox5 HBox
-    MoveScaled(1,14,23,4)
+    MoveScaled(1,15,23,4)
     { LabelTime2 Label
       MoveScaled(3,0,13,4)
       Font = Font["Bold,+1"]
@@ -71,7 +91,7 @@
     }
   }
   { PanelW1 VBox
-    MoveScaled(1,18,42,24)
+    MoveScaled(1,19,42,24)
     Expand = True
     { Separator1 Separator
       MoveScaled(0,0.4286,8,0)
@@ -163,13 +183,13 @@
     }
   }
   { SliderTime Slider
-    MoveScaled(4,43,32,3)
+    MoveScaled(4,44,32,3)
     Mouse = Mouse.Pointing
     ToolTip = ("Slide to change the time/date")
     Mark = True
   }
   { HBox4 HBox
-    MoveScaled(2,47,39,4)
+    MoveScaled(2,48,39,4)
     { PictureBoxArrowLeft PictureBox
       MoveScaled(1,0,8,5)
       Picture = Picture["icon:/22/previous"]
@@ -186,10 +206,10 @@
     }
   }
   { TimerGetWeather #Timer
-    #MoveScaled(32,34)
+    #MoveScaled(32,35)
     Delay = 1
   }
   { TimerSlider #Timer
-    #MoveScaled(26,15)
+    #MoveScaled(26,16)
   }
 }

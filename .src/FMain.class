@@ -1,16 +1,8 @@
 ' Gambas class file
 
 bLR As Boolean
-Public sWID As String = Settings["WID", "6620380"]
-Public vData As Variant
-sDescription As New String[]
-sTime As New String[]
-sIcon As New String[]
-sTempMin As New String[]
-sTempMax As New String[]
-sPressure As New String[]
-sWindSpeed As New String[]
-sWindDir As New String[]
+'sWID As String = Settings["WID", "6620380"]
+vData As Variant
 
 Public Sub Form_Open()
 
@@ -18,19 +10,25 @@ TimerGetWeather.Start
 
 End
 
-Public Sub Start()
-Dim siCount As Short
+Public Sub ToolButtonLocation_Click()
 
-sDescription.clear
-sTime.clear
-sIcon.clear
-sTempMin.clear
-sTempMax.clear
-sTime.clear
-sIcon.clear
-sPressure.clear
-sWindSpeed.clear
-sWindDir.clear
+Location.ShowModal
+SliderTime_Change
+
+End
+
+Public Sub SliderTime_Change()
+Dim sDate, sTemp As String
+Dim sD As New String[]
+Dim siCount As Short
+Dim sDescription As New String[]
+Dim sTime As New String[]
+Dim sIcon As New String[]
+Dim sTempMin As New String[]
+Dim sTempMax As New String[]
+Dim sPressure As New String[]
+Dim sWindSpeed As New String[]
+Dim sWindDir As New String[]
 
 vData = GetWeather()
 
@@ -50,26 +48,6 @@ For siCount = 0 To vData["list"].max
 Next
 
 SliderTime.MaxValue = vData["list"].max
-SliderTime_Change
-
-End
-
-Public Sub Form_Close()
-
-Settings["WID"] = sWID
-
-End
-
-Public Sub ToolButton1_Click()
-
-Location.ShowModal
-Start
-
-End
-
-Public Sub SliderTime_Change()
-Dim sDate, sTemp, sOrd As String
-Dim sD As New String[]
 
 If Not Exist("/tmp" &/ sIcon[SliderTime.value] & ".png") Then
   Shell "cd /tmp && wget http://openweathermap.org/img/w/" & sIcon[SliderTime.value] & ".png" Wait 
@@ -86,10 +64,23 @@ Next
 LabelTime2.text = Format(Date(sD[0], Val(sD[1]), Val(sD[2]), Val(sD[3]), Val(sD[4]), Val(sD[5])), "dddd d mmmm yyyy - hh:nn:ss")
 LabelDesc2.Text = UCase(Left(sDescription[SliderTime.value], 1)) & Mid(sDescription[SliderTime.value], 2)
 PictureBoxIcon.Picture = Picture.Load("/tmp" &/ sIcon[SliderTime.value] & ".png")
-LabelTempMax1.text = "Max " & Str(Int(Val(sTempMax[SliderTime.value]) - 273.15)) & "ºC"
-LabelTempMin1.text = "Min " & Str(Int(Val(sTempMin[SliderTime.value]) - 273.15)) & "ºC"
-LabelPressure.text = "Pressure " & Format(sPressure[SliderTime.value], "0000")
-LabelWindDir.text = "Wind\n" & WindDirection(Val(sWindDir[SliderTime.value])) & "\n" & Format(Str(Val(sWindSpeed[SliderTime.Value]) * 2.23694), "#") & " mph"
+
+If Settings["Temp", "C"] = "C" Then LabelTempMax1.text = "Max " & Str(Int(Val(sTempMax[SliderTime.value]) - 273.15)) & "ºC"
+If Settings["Temp"] = "K" Then LabelTempMax1.text = "Max " & Str(Int(Val(sTempMax[SliderTime.value]))) & "ºK"
+If Settings["Temp"] = "F" Then LabelTempMax1.text = "Max " & Str(Int(Val(sTempMax[SliderTime.value]) * 9 / 5 - 459.67)) & "ºF"
+
+If Settings["Temp", "C"] = "C" Then LabelTempMin1.text = "Min " & Str(Int(Val(sTempMin[SliderTime.value]) - 273.15)) & "ºC"
+If Settings["Temp"] = "K" Then LabelTempMin1.text = "Min " & Str(Int(Val(sTempMin[SliderTime.value]))) & "ºK"
+If Settings["Temp"] = "F" Then LabelTempMin1.text = "Min " & Str(Int(Val(sTempMin[SliderTime.value]) * 9 / 5 - 459.67)) & "ºF"
+
+If Settings["Press", "K"] = "K" Then LabelPressure.text = "Pressure " & Format(sPressure[SliderTime.value], "0000") & " kPa"
+If Settings["Press"] = "H" Then LabelPressure.text = "Pressure " & Format(Str(Val(sPressure[SliderTime.value]) * 0.2952998751), "000") & " inHg"
+
+LabelWindDir.text = "Wind\n" & WindDirection(Val(sWindDir[SliderTime.value])) & "\n"
+If Settings["Wind"] = "P" Then LabelWindDir.text &= Format(Str(Val(sWindSpeed[SliderTime.Value]) * 2.23694), "#") & " mph"
+If Settings["Wind", "M"] = "M" Then LabelWindDir.text &= Format(Str(Val(sWindSpeed[SliderTime.Value])), "#") & " m/s"
+If Settings["Wind"] = "K" Then LabelWindDir.text &= Format(Str(Val(sWindSpeed[SliderTime.Value]) * 3.6), "#") & " kph"
+
 PictureBoxWind.Picture = Picture.Load("../" &/ WindDirection(Val(sWindDir[SliderTime.value])) & ".png")
 
 End
@@ -99,10 +90,12 @@ Dim sResult As String
 Dim hClient As HttpClient
 
 hClient = New HttpClient As "hClient"
-hClient.URL = "http://api.openweathermap.org/data/2.5/forecast?id=" & FMain.sWID & "&uk&APPID=bdb074a3b2f71d852f294da2e596c18f"
-hClient.Async = False
-hClient.TimeOut = 60
-hClient.get
+With hClient
+  .URL = "http://api.openweathermap.org/data/2.5/forecast?id=" & Settings["sWID", "6620380"] & "&uk&APPID=bdb074a3b2f71d852f294da2e596c18f" 
+  .Async = False
+  .TimeOut = 60
+  .get
+End With
 
 If Lof(hClient) Then sResult = Read #hClient, Lof(hClient)
 
@@ -112,7 +105,7 @@ End
 
 Public Sub TimerGetWeather_Timer()
 
-Start
+SliderTime_Change
 TimerGetWeather.Delay = 60000
 
 End
@@ -132,7 +125,6 @@ Return sDir[siCalc]
 
 End
 
-
 Public Sub PictureBoxArrowRight_Enter()
 
 bLR = True
@@ -150,7 +142,7 @@ TimerSlider.Start
 End
 
 Public Sub PictureBoxArrowLeft_Leave()
-  
+
 TimerSlider.Stop  
 TimerSlider.Delay = 1
 
@@ -174,5 +166,15 @@ TimerSlider.Delay = 1000
 
 End
 
+Public Sub ToolButtonPreferences_Click()
 
+Preferences.ShowModal
+SliderTime_Change
 
+End
+
+Public Sub ToolButtonAbout_Click()
+
+About.Show
+
+End

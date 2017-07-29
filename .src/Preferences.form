@@ -1,0 +1,111 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(0,0,60,23)
+  Text = ("Preferences")
+  Icon = Picture["weathericon.png"]
+  Arrangement = Arrange.Vertical
+  Padding = 10
+  { HBox1 HBox
+    MoveScaled(0,1,60,4)
+    { Label1 Label
+      MoveScaled(0,0,14,4)
+      Text = ("Tempreture: ")
+      Alignment = Align.Right
+    }
+    { HBox2 HBox
+      MoveScaled(15,0,45,4)
+      Expand = True
+      { RadioButtonCelsius RadioButton Temp
+        Name = "RadioButtonCelsius"
+        MoveScaled(0,1,13,3)
+        Tag = "C"
+        Text = Shortcut(("Celsius"), "C")
+        Value = True
+      }
+      { RadioButtonKelvin RadioButton Temp
+        Name = "RadioButtonKelvin"
+        MoveScaled(15,0,13,3)
+        Tag = "K"
+        Text = Shortcut(("Kelvin"), "K")
+      }
+      { RadioButtonFahrenheit RadioButton Temp
+        Name = "RadioButtonFahrenheit"
+        MoveScaled(31,1,13,3)
+        Tag = "F"
+        Text = Shortcut(("Fahrenheit"), "F")
+      }
+    }
+  }
+  { HBox3 HBox
+    MoveScaled(0,5,60,4)
+    { Label2 Label
+      MoveScaled(0,0,14,4)
+      Text = ("Wind speed: ")
+      Alignment = Align.Right
+    }
+    { HBox4 HBox
+      MoveScaled(15,0,45,4)
+      Expand = True
+      { RadioButtonKPH RadioButton Wind
+        Name = "RadioButtonKPH"
+        MoveScaled(2,1,13,3)
+        Tag = "K"
+        Text = Shortcut(("kph"), "h")
+      }
+      { RadioButtonMPH RadioButton Wind
+        Name = "RadioButtonMPH"
+        MoveScaled(15,1,13,3)
+        Tag = "P"
+        Text = Shortcut(("mph"), "p")
+        Value = True
+      }
+      { RadioButtonMperS RadioButton Wind
+        Name = "RadioButtonMperS"
+        MoveScaled(26,1,13,3)
+        Tag = "M"
+        Text = Shortcut(("m/s"), "m")
+      }
+    }
+  }
+  { HBox5 HBox
+    MoveScaled(0,10,60,4)
+    { Label3 Label
+      MoveScaled(0,0,14,4)
+      Text = ("Pressure: ")
+      Alignment = Align.Right
+    }
+    { HBox6 HBox
+      MoveScaled(15,0,45,4)
+      Expand = True
+      { RadioButtonKPA RadioButton Pressure
+        Name = "RadioButtonKPA"
+        MoveScaled(1,1,13,3)
+        Tag = "K"
+        Text = Shortcut(("kPa"), "a")
+      }
+      { RadioButtonInHg RadioButton Pressure
+        Name = "RadioButtonInHg"
+        MoveScaled(15,1,13,3)
+        Tag = "H"
+        Text = Shortcut(("inHg"), "H")
+        Value = True
+      }
+    }
+  }
+  { Panel2 Panel
+    MoveScaled(17,15,6,3)
+    Expand = True
+  }
+  { HBox7 HBox
+    MoveScaled(1,18,58,4)
+    { Panel1 Panel
+      MoveScaled(6,1,7,2)
+      Expand = True
+    }
+    { ButtonDone Button
+      MoveScaled(43,0,12,4)
+      Text = Shortcut(("Done"), "D")
+    }
+  }
+}

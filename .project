@@ -3,7 +3,7 @@
 Title=Weather
 Startup=FMain
 Icon=weathericon.png
-Version=0.0.1
+Version=0.0.2
 Component=gb.image
 Component=gb.qt4
 Component=gb.form
@@ -17,4 +17,5 @@ Environment="GB_GUI=gb.gtk3"
 TabSize=2
 Translate=1
 Language=en_GB
+CreateShortcut=1
 Packager=1

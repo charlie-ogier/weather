@@ -113,7 +113,7 @@ End
 
 Public Sub ButtonSave_Click()
 
-FMain.sWID = Trim(GridViewSearch[iLastRow, 0].Text)
+Settings["sWID"] = Trim(GridViewSearch[iLastRow, 0].Text)
 Me.Close
 
 End

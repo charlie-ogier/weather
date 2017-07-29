@@ -1,0 +1,79 @@
+' Gambas class file
+
+Public Sub Form_Open()
+
+GetSettings
+
+End
+
+Public Sub GetSettings()
+
+Select Case Settings["Temp", "C"]
+  Case "C"
+    RadioButtonCelsius.Value = True
+  Case "F"
+    RadioButtonFahrenheit.Value = True
+  Case "K"
+    RadioButtonKelvin.Value = True
+End Select
+
+Select Case Settings["Wind", "K"]
+  Case "K"
+    RadioButtonKPH.Value = True
+  Case "M"
+    RadioButtonMperS.Value = True
+  Case "H"
+    RadioButtonMPH.Value = True
+End Select
+
+Select Case Settings["Press", "K"]
+  Case "K"
+    RadioButtonKPA.Value = True
+  Case "H"
+    RadioButtonInHg.Value = True
+End Select
+
+End
+
+Public Sub Temp_Click()
+
+Select Case Last.Tag
+  Case "C"
+    Settings["Temp"] = "C"
+  Case "K"
+    Settings["Temp"] = "K"
+  Case "F"
+    Settings["Temp"] = "F"
+End Select
+
+End
+
+Public Sub Wind_Click()
+
+Select Case Last.Tag
+  Case "K"
+    Settings["Wind"] = "K"
+  Case "P"
+    Settings["Wind"] = "P"
+  Case "M"
+    Settings["Wind"] = "M"
+End Select
+
+End
+
+Public Sub Pressure_Click()
+
+Select Case Last.Tag
+  Case "K"
+    Settings["Press"] = "K"
+  Case "H"
+    Settings["Press"] = "H"
+End Select
+
+End
+
+Public Sub ButtonDone_Click()
+
+Me.Close
+
+End
