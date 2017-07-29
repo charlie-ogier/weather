@@ -176,7 +176,7 @@ Geometry=[991,56,245,740]
 Path="weather.gambas"
 
 [OpenFile]
-File[1]=".src/FMain.class:10.177"
+File[1]=".src/FMain.class:0.3"
 Active=7
 File[2]=".src/FMain.form"
 Count=8

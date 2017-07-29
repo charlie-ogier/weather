@@ -1,11 +1,11 @@
 ' Gambas class file
 
 bLR As Boolean
-'sWID As String = Settings["WID", "6620380"]
 vData As Variant
 
 Public Sub Form_Open()
 
+LabelVersion.Text = "Version 0.1.0"
 TimerGetWeather.Start
 
 End

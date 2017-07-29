@@ -28,6 +28,12 @@
       ToolTip = ("Preferences")
       Picture = Picture["icon:/22/info"]
     }
+    { LabelVersion Label
+      MoveScaled(22,1,18,3)
+      Font = Font["-1"]
+      Expand = True
+      Alignment = Align.Right
+    }
   }
   { Separator5 Separator
     MoveScaled(1,5,9,0)
