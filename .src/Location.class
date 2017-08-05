@@ -1,155 +1,154 @@
 ' Gambas class file
 
-sData As New String[]
-iID As Integer
-iLastRow As Integer = -1
+sData As New String[]                                                         'To store the locations
+iID As Integer                                                                'To store the location ID number
+iLastRow As Integer = -1                                                      'To store the last row clicked on the Gridview
 
-Public Sub Form_Open()
-Dim sTemp, sHold As String
-Dim sCountries As New String[]
+Public Sub Form_Open()                                                        'When the Form opens
+Dim sTemp, sHold As String                                                    'Temp strings
+Dim sCountries As New String[]                                                'To store Country codes (GB, DE, US etc)
 
-For Each sTemp In Split(File.Load("../cities.csv"), gb.NewLine)
-  If Not sTemp Then Continue
-  sData.Add(sTemp)
+For Each sTemp In Split(File.Load("../cities.csv"), gb.NewLine)               'Load the 'city.csv' file and split it by newlines
+  If Not sTemp Then Continue                                                  'If there is no data go to the next iteration of the loop
+  sData.Add(sTemp)                                                            'Add the locations to sData
 Next
 
-For Each sTemp In sData
-  sCountries.Add(Split(sTemp)[1])
+For Each sTemp In sData                                                       'For each item in sData
+  sCountries.Add(Split(sTemp)[1])                                             'Add the country code to sCountries
 Next
 
-sCountries.Sort()
+sCountries.Sort()                                                             'Sort sCounties
 
-ComboBoxCountry.Add(" ")
+ComboBoxCountry.Add(" ")                                                      'Add a blank to the ComboBox
 
-For Each sTemp In sCountries
-  If sTemp = "" Or sTemp = sHold Then Continue
-  sHold = sTemp
-  ComboBoxCountry.Add(sTemp)
+For Each sTemp In sCountries                                                  'For each of the country codes in sCountries
+  If sTemp = "" Or sTemp = sHold Then Continue                                'If empty or = sHold (i.e. is already added) then go to the next iteration of the loop
+  sHold = sTemp                                                               'sHold = the country code, to be checked for duplication next time around
+  ComboBoxCountry.Add(sTemp)                                                  'Add the code to the ComboBox
 Next
 
-TextBoxSearch.SetFocus
+TextBoxSearch.SetFocus                                                        'Set the focus on the TextBox
 
 End
 
-Public Sub ButtonSearch_Click()
-Dim sTemp As String
-Dim sFound As New String[]
-Dim iCount As Integer = 1
-Dim byCount As Byte
+Public Sub ButtonSearch_Click()                                               'When the 'Search' button is clicked
+Dim sTemp As String                                                           'Temp string
+Dim sFound As New String[]                                                    'To store 'Found' data
+Dim iCount As Integer = 1                                                     'Counter
+Dim byCount As Byte                                                           'Counter
 
-HBoxProgress.Visible = True
-Wait 0.01
+HBoxProgress.Visible = True                                                   'Show the 'Progress bar'
+Wait 0.01                                                                     'Wiz around the event loop
 
-LabelSelect.text = ""
-GridViewSearch.clear
-If CheckBoxCountry.value = False And Len(TextBoxSearch.text) < 2 Then Return
+LabelSelect.text = ""                                                         'Clear the 'Selected' label
+GridViewSearch.clear                                                          'Clear the GridView
+If CheckBoxCountry.value = False And Len(TextBoxSearch.text) < 2 Then Return  'If there is less that 2 letters added in the TextBox get out of here
 
 
-If CheckBoxCountry.Value = False Then
-  For Each sTemp In sData
-    PanelProgress.Width = (HBoxProgress.Width / 100) * (icount / sData.max) * 100
-    Wait
-    If InStr(UCase(sTemp), UCase(Trim(TextBoxSearch.text))) Then sFound.Add(sTemp)
-    Inc iCount
+If CheckBoxCountry.Value = False Then                                                           'If the Country CheckBox is not set then
+  For Each sTemp In sData                                                                       'For each item in sData
+    PanelProgress.Width = (HBoxProgress.Width / 100) * (icount / sData.max) * 100               'Move the 'Progress bar'
+    Wait                                                                                        'Wiz around the event loop
+    If InStr(UCase(sTemp), UCase(Trim(TextBoxSearch.text))) Then sFound.Add(sTemp)              'If item matches the search string then add it to sFound
+    Inc iCount                                                                                  'Increase counter
   Next
-Else
-  For Each sTemp In sData
-    PanelProgress.Width = (HBoxProgress.Width / 100) * (icount / sData.max) * 100
-    Wait
-    If InStr(UCase(Split(sTemp)[1]), UCase(Trim(ComboBoxCountry.Text))) Then sFound.Add(sTemp)
-    Inc iCount
+Else                                                                                            'Else Country CheckBox is set 
+  For Each sTemp In sData                                                                       'For each item in sData
+    PanelProgress.Width = (HBoxProgress.Width / 100) * (icount / sData.max) * 100               'Move the 'Progress bar
+    Wait                                                                                        'Wiz around the event loop
+    If InStr(UCase(Split(sTemp)[1]), UCase(Trim(ComboBoxCountry.Text))) Then sFound.Add(sTemp)  'If the Country code matches the search then add it to sFound
+    Inc iCount                                                                                  'Increase counter
   Next
 End If
 
-If sFound.max > 0 Then LabelSelect.text = "Select your location" Else LabelSelect.text = ""
+If sFound.max > 0 Then LabelSelect.text = "Select your location" Else LabelSelect.text = ""     'If there is something to select display message
 
-With GridViewSearch
-  .Columns.count = 6
-  .Rows.count = sFound.count
-  .Columns[0].Title = "ID "
-  .Columns[1].Title = "Country "
-  .Columns[2].Title = "City "
-  .Columns[3].Title = "Extra details "
+With GridViewSearch                                                           'Set up GridView
+  .Columns.count = 6                                                          '6 columns
+  .Rows.count = sFound.count                                                  'Enough rows to diaply all in sFound
+  .Columns[0].Title = "ID "                                                   'Header text
+  .Columns[1].Title = "Country "                                              'Header text
+  .Columns[2].Title = "City "                                                 'Header text
+  .Columns[3].Title = "Extra details "                                        'Header text
 End With
 
-For iCount = 0 To sFound.Max
-  For Each sTemp In Split(sFound[icount])
-    GridViewSearch[iCount, byCount].text = sTemp & " "
-    Inc byCount
+For iCount = 0 To sFound.Max                                                  'To loop through each item in sFound e.g. '874652,GE,Orekhovo'
+  For Each sTemp In Split(sFound[icount])                                     'Split each item by commas
+    GridViewSearch[iCount, byCount].text = sTemp & " "                        'Add each item to the next column on GridView
+    Inc byCount                                                               'Increase the counter
   Next
-  byCount = 0
+  byCount = 0                                                                 'Reset the counter
 Next
 
-LabelStats.text = Str(sFound.Count) & " matches from " & Str(sData.Count) & " locations"
-Wait
-GridViewSearch.Columns.Width = -1
-HBoxProgress.Visible = False
-Wait 0.01
+LabelStats.text = Str(sFound.Count) & " matches from " & 
+  Str(sData.Count) & " locations"                                             'Display the amount of locations found
+Wait                                                                          'Wiz around the event loop
+GridViewSearch.Columns.Width = -1                                             'Auto size the columns (can be slow)
+HBoxProgress.Visible = False                                                  'Hide the 'Progress bar'
+Wait 0.01                                                                     'Wiz around the event loop
 
 End
 
-Public Sub GridViewSearch_Click()
+Public Sub GridViewSearch_Click()                                             'If the GridView is clicked
 
-iID = Val(GridViewSearch[Last.row, 0].text)
-LabelChoosen.text = GridViewSearch[Last.row, 2].text
-ButtonSave.Enabled = True
+iID = Val(GridViewSearch[Last.row, 0].text)                                   'Store the locations ID
+LabelChoosen.text = GridViewSearch[Last.row, 2].text                          'Display the 'Location' in LabelChoosen
+ButtonSave.Enabled = True                                                     'Enable the 'save' button
 
-iLastRow = Last.Row
-
-End
-
-Public Sub GridViewSearch_DblClick()
-
-iID = Val(GridViewSearch[Last.row, 0].text)
-ButtonSave_Click
+iLastRow = Last.Row                                                           'Store the last row clicked
 
 End
 
-Public Sub ButtonCancel_Click()
+Public Sub GridViewSearch_DblClick()                                          'If the GridView is double clicked
 
-Me.Close
-
-End
-
-Public Sub ButtonSave_Click()
-
-Settings["sWID"] = Trim(GridViewSearch[iLastRow, 0].Text)
-Me.Close
+iID = Val(GridViewSearch[Last.row, 0].text)                                   'Store the location ID
+ButtonSave_Click                                                              'Press the 'Save' button
 
 End
 
-Public Sub CheckBoxCountry_Click()
+Public Sub ButtonCancel_Click()                                               'If the 'Cancel' button is clicked
 
-If CheckBoxCountry.Value = True Then
-  ComboBoxCountry.Visible = True
-  TextBoxSearch.Visible = False
-  LabelSearch.Text = "Select country code "
-  ComboBoxCountry.SetFocus
-Else
-  ComboBoxCountry.Visible = False
-  TextBoxSearch.Visible = True
-  LabelSearch.Text = "Enter your location "
-  TextBoxSearch.SetFocus
+Me.Close                                                                      'Close the Form
+
+End
+
+Public Sub ButtonSave_Click()                                                 'If the 'SDave' button is clicked
+
+Settings["sWID"] = Trim(GridViewSearch[iLastRow, 0].Text)                     'Save the ID in Settings
+Me.Close                                                                      'Close the Form
+
+End
+
+Public Sub CheckBoxCountry_Click()                                            'If the Countries CheckBox is clicked
+
+If CheckBoxCountry.Value = True Then                                          'If the Country CheckBox is set then
+  ComboBoxCountry.Visible = True                                              'Show the ComboBox
+  TextBoxSearch.Visible = False                                               'Hide the TextBox
+  LabelSearch.Text = "Select country code "                                   'Display the text..
+  ComboBoxCountry.SetFocus                                                    'Set the Focus
+Else                                                                          'Else..
+  ComboBoxCountry.Visible = False                                             'Hide the ComboBox
+  TextBoxSearch.Visible = True                                                'Show the TextBox
+  LabelSearch.Text = "Enter your location "                                   'Display the text..
+  TextBoxSearch.SetFocus                                                      'Set the Focus
 Endif
 
 End
 
-Public Sub ComboBoxCountry_Change()
+Public Sub ComboBoxCountry_Change()                                           'If the ComboBox text changes..
 
-ComboBoxCountry.text = UCase(ComboBoxCountry.text)
-
-End
-
-Public Sub ComboBoxCountry_KeyRelease()
-
-If Key.code = Key.Enter Or Key.code = Key.Return Then ButtonSearch_Click
+ComboBoxCountry.text = UCase(ComboBoxCountry.text)                            'Make the text upper case
 
 End
 
-Public Sub TextBoxSearch_KeyRelease()
+Public Sub ComboBoxCountry_KeyRelease()                                       'If a key is relesed while the cursor is in the ComboBox..
 
-If Key.code = Key.Enter Or Key.code = Key.Return Then ButtonSearch_Click
+If Key.code = Key.Enter Or Key.code = Key.Return Then ButtonSearch_Click      'If it is [Enter] or [Return] then clic the 'Search' button
 
-  
+End
+
+Public Sub TextBoxSearch_KeyRelease()                                         'If a key is relesed while the cursor is in the TextBox..
+
+If Key.code = Key.Enter Or Key.code = Key.Return Then ButtonSearch_Click      'If it is [Enter] or [Return] then clic the 'Search' button
 
 End

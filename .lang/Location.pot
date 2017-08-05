@@ -5,32 +5,48 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: $(PACKAGE) $(VERSION)\n"
-"POT-Creation-Date: 2017-07-29 11:18 UTC\n"
+"POT-Creation-Date: 2017-08-03 16:21 UTC\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: Location.form:41
+msgid "Use the 2 digit country code e.g. ''GB', 'DE','US' etc."
+msgstr ""
+
+#: Location.form:42
 msgid "Search by country code"
 msgstr ""
 
-#: Location.form:46
+#: Location.form:47
 msgid "Enter your location "
 msgstr ""
 
-#: Location.form:52
+#: Location.form:53
 msgid "Enter your location or part of\nThen select your location from the list"
 msgstr ""
 
-#: Location.form:66
+#: Location.form:67
+msgid "Search the database"
+msgstr ""
+
+#: Location.form:68
 msgid "Search"
 msgstr ""
 
-#: Location.form:94
+#: Location.form:96
+msgid "Close without making changes"
+msgstr ""
+
+#: Location.form:97
 msgid "Cancel"
 msgstr ""
 
-#: Location.form:120
+#: Location.form:123
+msgid "Save the selected location"
+msgstr ""
+
+#: Location.form:124
 msgid "Save"
 msgstr ""
 

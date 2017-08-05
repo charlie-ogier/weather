@@ -1,14 +1,14 @@
 ' Gambas class file
 
 
-Public Sub ButtonDone_Click()
+Public Sub ButtonDone_Click()                                       'If the 'Done' button is clicked
 
-Me.close
+Me.close                                                            'Close the Form
 
 End
 
-Public Sub LabelHyperlink_MouseDown()
+Public Sub LabelHyperlink_MouseDown()                               'If the 'Hyperlink' is clicked
 
-Shell "xdg-open https://openweathermap.org/"
+Shell "xdg-open https://openweathermap.org/"                        'Open the OpenWeathermap web site. This feature is added at their request
 
 End

@@ -1,35 +1,57 @@
 # Gambas Form File 3.0
 
 { Form Form
-  MoveScaled(0,0,44,52)
+  MoveScaled(0,0,48,53)
   Icon = Picture["weathericon.png"]
   Arrangement = Arrange.Vertical
   Padding = 10
+  { MenuPopUp Menu
+    { MenuHide Menu mMenu
+      Name = "MenuHide"
+      Text = ("Show")
+      Tag = "Show"
+    }
+    { MenuClose Menu mMenu
+      Name = "MenuClose"
+      Text = ("Close")
+      Tag = "Close"
+    }
+  }
   { HBox1 HBox
     MoveScaled(0,0,44,4)
-    { ToolButtonLocation ToolButton
+    { ToolButtonLocation ToolButton AllTools
+      Name = "ToolButtonLocation"
       MoveScaled(1,0,4,4)
+      Tag = "Location"
       ToolTip = ("Select your location")
       Picture = Picture["icon:/22/internet"]
     }
     { Panel11 Panel
       MoveScaled(6,1,1,2)
     }
-    { ToolButtonPreferences ToolButton
+    { ToolButtonPreferences ToolButton AllTools
+      Name = "ToolButtonPreferences"
       MoveScaled(7,0,4,4)
+      Tag = "Pref"
       ToolTip = ("Preferences")
       Picture = Picture["icon:/22/options"]
     }
     { Panel12 Panel
-      MoveScaled(12,1,1,2)
+      MoveScaled(11,1,1,2)
     }
-    { ToolButtonAbout ToolButton
+    { ToolButtonAbout ToolButton AllTools
+      Name = "ToolButtonAbout"
       MoveScaled(13,0,4,4)
-      ToolTip = ("Preferences")
+      Tag = "About"
+      ToolTip = ("About")
       Picture = Picture["icon:/22/info"]
     }
+    { Panel3 Panel
+      MoveScaled(17.2857,0.8571,1,2)
+      Expand = True
+    }
     { LabelVersion Label
-      MoveScaled(22,1,18,3)
+      MoveScaled(29,1,15,3)
       Font = Font["-1"]
       Expand = True
       Alignment = Align.Right
@@ -40,7 +62,7 @@
     Background = Color.Black
   }
   { VBox1 VBox
-    MoveScaled(-3,6,51,8)
+    MoveScaled(0,4,44,11)
     { HBox2 HBox
       MoveScaled(0,1,32,3)
       { LabelCity0 Label
@@ -58,31 +80,34 @@
       }
     }
     { HBox3 HBox
-      MoveScaled(0,4,50,3)
+      MoveScaled(1,4,38,3)
       { LabelLat0 Label
-        MoveScaled(3,0,8,3)
+        MoveScaled(0,0,10.7143,3)
         AutoResize = True
         Text = ("Latitude ")
         Alignment = Align.Right
       }
+      { Panel2 Panel
+        MoveScaled(16,0,1,3)
+      }
       { LabelLat Label
-        MoveScaled(13,0,10,3)
+        MoveScaled(19,0,10,3)
         AutoResize = True
       }
-      { Panel2 Panel
-        MoveScaled(24,0,1,3)
-      }
+    }
+    { HBox9 HBox
+      MoveScaled(2,7,37,3)
       { LabelLong0 Label
-        MoveScaled(25,0,9,3)
+        MoveScaled(0,0,10.7143,3)
         AutoResize = True
         Text = ("Longitude")
         Alignment = Align.Right
       }
-      { Panel3 Panel
-        MoveScaled(36,0,1,3)
+      { Panel13 Panel
+        MoveScaled(16,0,1,3)
       }
       { LabelLong Label
-        MoveScaled(38,0,11,3)
+        MoveScaled(19,0,11,3)
         AutoResize = True
       }
     }
@@ -118,20 +143,19 @@
         MoveScaled(0,0,16,6)
         { Panel10 Panel
           MoveScaled(0,0,2,3)
-          Expand = True
         }
         { PictureBoxIcon PictureBox
-          MoveScaled(3,0,5,6)
+          MoveScaled(3,0,7,6)
           Expand = True
+          Picture = Picture["wget.png"]
           AutoResize = True
           Alignment = Align.Center
         }
         { Panel7 Panel
-          MoveScaled(8,0,2,3)
-          Expand = True
+          MoveScaled(11,0,2,3)
         }
         { Separator3 Separator
-          MoveScaled(11,1,0,5)
+          MoveScaled(14,1,0,5)
           Background = Color.Black
         }
       }
@@ -201,8 +225,17 @@
       Picture = Picture["icon:/22/previous"]
       Alignment = Align.Left
     }
+    { Panel14 Panel
+      MoveScaled(12,1,2,2)
+      Expand = True
+    }
+    { ButtonHide Button
+      MoveScaled(15,0,9,4)
+      ToolTip = ("Hide this program. You can access it again from the Tray Icon")
+      Text = Shortcut(("Hide"), "H")
+    }
     { Panel4 Panel
-      MoveScaled(18,1,7,2)
+      MoveScaled(25,1,2,2)
       Expand = True
     }
     { PictureBoxArrowRight PictureBox
@@ -217,5 +250,10 @@
   }
   { TimerSlider #Timer
     #MoveScaled(26,16)
+  }
+  { TrayIcon1 #TrayIcon
+    #MoveScaled(22,34)
+    Picture = Picture["weathericon.png"]
+    PopupMenu = "MenuPopUp"
   }
 }

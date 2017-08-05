@@ -1,79 +1,79 @@
 ' Gambas class file
 
-Public Sub Form_Open()
+Public Sub Form_Open()                                              'When the Form opens
 
-GetSettings
-
-End
-
-Public Sub GetSettings()
-
-Select Case Settings["Temp", "C"]
-  Case "C"
-    RadioButtonCelsius.Value = True
-  Case "F"
-    RadioButtonFahrenheit.Value = True
-  Case "K"
-    RadioButtonKelvin.Value = True
-End Select
-
-Select Case Settings["Wind", "K"]
-  Case "K"
-    RadioButtonKPH.Value = True
-  Case "M"
-    RadioButtonMperS.Value = True
-  Case "H"
-    RadioButtonMPH.Value = True
-End Select
-
-Select Case Settings["Press", "K"]
-  Case "K"
-    RadioButtonKPA.Value = True
-  Case "H"
-    RadioButtonInHg.Value = True
-End Select
+GetSettings                                                         'Go to the GetSettings routine
 
 End
 
-Public Sub Temp_Click()
+Public Sub GetSettings()                                            'To get the Settings 
 
-Select Case Last.Tag
-  Case "C"
-    Settings["Temp"] = "C"
-  Case "K"
-    Settings["Temp"] = "K"
-  Case "F"
-    Settings["Temp"] = "F"
+Select Case Settings["Temp", "C"]                                   'Get 'Temp' setting or use 'C'
+  Case "C"                                                          'If 'C'
+    RadioButtonCelsius.Value = True                                 'Set the Celsius RadioButton
+  Case "F"                                                          'If 'F'
+    RadioButtonFahrenheit.Value = True                              'Set the Fahrenheit RadioButton
+  Case "K"                                                          'If 'K'
+    RadioButtonKelvin.Value = True                                  'Set the Kelvin RadioButton
+End Select
+
+Select Case Settings["Wind", "K"]                                   'Get 'Wind' setting or use 'K'
+  Case "K"                                                          'If 'K'
+    RadioButtonKPH.Value = True                                     'Set the KPH RadioButton
+  Case "M"                                                          'If 'M'
+    RadioButtonMperS.Value = True                                   'Set the M/S RadioButton
+  Case "H"                                                          'If 'H'
+    RadioButtonMPH.Value = True                                     'Set the MPH RadioButton
+End Select
+
+Select Case Settings["Press", "K"]                                  'Get 'Press' setting or use 'K'
+  Case "K"                                                          'If 'K'
+    RadioButtonKPA.Value = True                                     'Set the kPa RadioButton
+  Case "H"                                                          'If 'H'
+    RadioButtonInHg.Value = True                                    'Set the inHg RadioButton
 End Select
 
 End
 
-Public Sub Wind_Click()
+Public Sub Temp_Click()                                             'If one of the Tempreture RadioButtons is clicked
 
-Select Case Last.Tag
-  Case "K"
-    Settings["Wind"] = "K"
-  Case "P"
-    Settings["Wind"] = "P"
-  Case "M"
-    Settings["Wind"] = "M"
+Select Case Last.Tag                                                'Get the Tag of the last RadioButton clicked
+  Case "C"                                                          'If 'C'
+    Settings["Temp"] = "C"                                          'Save the setting
+  Case "K"                                                          'If 'K'
+    Settings["Temp"] = "K"                                          'Save the setting
+  Case "F"                                                          'If 'F'
+    Settings["Temp"] = "F"                                          'Save the setting
 End Select
 
 End
 
-Public Sub Pressure_Click()
+Public Sub Wind_Click()                                             'If one of the Wind RadioButtons is clicked
 
-Select Case Last.Tag
-  Case "K"
-    Settings["Press"] = "K"
-  Case "H"
-    Settings["Press"] = "H"
+Select Case Last.Tag                                                'Get the Tag of the last RadioButton clicked
+  Case "K"                                                          'If 'K'
+    Settings["Wind"] = "K"                                          'Save the setting
+  Case "P"                                                          'If 'P'
+    Settings["Wind"] = "P"                                          'Save the setting
+  Case "M"                                                          'If 'M'
+    Settings["Wind"] = "M"                                          'Save the setting
 End Select
 
 End
 
-Public Sub ButtonDone_Click()
+Public Sub Pressure_Click()                                         'If one of the Pressure RadioButtons is clicked
 
-Me.Close
+Select Case Last.Tag                                                'Get the Tag of the last RadioButton clicked
+  Case "K"                                                          'If 'K'
+    Settings["Press"] = "K"                                         'Save the setting
+  Case "H"                                                          'If 'H'
+    Settings["Press"] = "H"                                         'Save the setting
+End Select
+
+End
+
+Public Sub ButtonDone_Click()                                       'If the 'Done' button is clicked
+
+Me.Close                                                            'Close the Form
 
 End

@@ -1,180 +1,224 @@
 ' Gambas class file
 
-bLR As Boolean
-vData As Variant
+bLR As Boolean                                                                'Which 'direction' is hovered over
+vData As Variant                                                              'Holds the weather data
+bOnceOnly As Boolean                                                          'Stops auto hide
 
-Public Sub Form_Open()
+Public Sub Form_Open()                                                        'When the Form opens
 
-LabelVersion.Text = "Version 0.1.0"
-TimerGetWeather.Start
-
-End
-
-Public Sub ToolButtonLocation_Click()
-
-Location.ShowModal
-SliderTime_Change
+LabelVersion.Text = "Version 0.1.0"                                           'Display the version number
+TimerGetWeather.Start                                                         'Start the timer
+Settings.Read(Me, "Window")                                                   'Get the window position and size
 
 End
 
-Public Sub SliderTime_Change()
-Dim sDate, sTemp As String
-Dim sD As New String[]
-Dim siCount As Short
-Dim sDescription As New String[]
-Dim sTime As New String[]
-Dim sIcon As New String[]
-Dim sTempMin As New String[]
-Dim sTempMax As New String[]
-Dim sPressure As New String[]
-Dim sWindSpeed As New String[]
-Dim sWindDir As New String[]
+Public Sub SliderTime_Change()                                                'What to do if the slider position is changed
+Dim sDate, sTemp As String                                                    'Date and Temp strings
+Dim sD As New String[]                                                        'Array for sorting the time and date
+Dim siCount As Short                                                          'Counter
+Dim sTempMax, sTempMin, sIcon, sTime, sDescription As New String[]            'Arrays to store the collected data
+Dim sWindDir, sWindSpeed, sPressure As New String[]                           'Arrays to store the collected data
 
-vData = GetWeather()
+vData = GetWeather()                                                          'Get the weather details and store in vData 
 
-LabelCity.text = vData["city"]["name"]
-LabelLat.text = vData["city"]["coord"]["lat"]
-LabelLong.text = vData["city"]["coord"]["lon"]
+LabelCity.text = vData["city"]["name"]                                        'Display the Location name
+LabelLat.text = vData["city"]["coord"]["lat"]                                 'Display the Latitude
+LabelLong.text = vData["city"]["coord"]["lon"]                                'Display the Longitude
 
-For siCount = 0 To vData["list"].max
-  sTime.add(vData["list"][siCount]["dt_txt"])
-  sDescription.Add(vData["list"][siCount]["weather"][0]["description"])
-  sIcon.Add(vData["list"][siCount]["weather"][0]["icon"])
-  sTempMin.add(vData["list"][siCount]["main"]["temp_min"])
-  sTempMax.add(vData["list"][siCount]["main"]["temp_max"])
-  sPressure.add(vData["list"][siCount]["main"]["pressure"])
-  sWindSpeed.add(vData["list"][siCount]["wind"]["speed"])
-  sWindDir.add(vData["list"][siCount]["wind"]["deg"])
+For siCount = 0 To vData["list"].max                                          'Fill the arrays with the weather details for the next 5 days
+  sTime.add(vData["list"][siCount]["dt_txt"])                                 'The time
+  sDescription.Add(vData["list"][siCount]["weather"][0]["description"])       'The description
+  sIcon.Add(vData["list"][siCount]["weather"][0]["icon"])                     'The weather icon
+  sTempMin.add(vData["list"][siCount]["main"]["temp_min"])                    'The minumim tempreture
+  sTempMax.add(vData["list"][siCount]["main"]["temp_max"])                    'The maximum tempreture
+  sPressure.add(vData["list"][siCount]["main"]["pressure"])                   'The air pressure
+  sWindSpeed.add(vData["list"][siCount]["wind"]["speed"])                     'The wind speed
+  sWindDir.add(vData["list"][siCount]["wind"]["deg"])                         'The wind direction
 Next
 
-SliderTime.MaxValue = vData["list"].max
+SliderTime.MaxValue = vData["list"].max                                       'Set the Slider Value to the limit of the data
 
-If Not Exist("/tmp" &/ sIcon[SliderTime.value] & ".png") Then
-  Shell "cd /tmp && wget http://openweathermap.org/img/w/" & sIcon[SliderTime.value] & ".png" Wait 
+  If Not Exist("/tmp" &/ sIcon[SliderTime.value] & ".png") Then               'If the icon for the weather does not exist then..
+  Shell "cd /tmp && wget http://openweathermap.org/img/w/" & sIcon[SliderTime.value] & ".png" Wait  'Go and get it
 Endif
 
-sDate = Replace(sTime[SliderTime.value], "-", ",")
-sDate = Replace(sDate, ":", ",")
-sDate = Replace(sDate, " ", ",")
+sDate = Replace(sTime[SliderTime.value], "-", ",")                            'Date comes as '2017-12-31 15:00:00' Get rid of the '-'
+sDate = Replace(sDate, ":", ",")                                              'Date comes as '2017-12-31 15:00:00' Get rid of the ':'
+sDate = Replace(sDate, " ", ",")                                              'Date comes as '2017-12-31 15:00:00' Replace the space with a comma =  '2017,12,31,15,00,00'
 
-For Each sTemp In Split(sDate)
-  sD.Add(sTemp)
+For Each sTemp In Split(sDate)                                                'Split the sDate by commas
+  sD.Add(sTemp)                                                               'Add each item to sD
 Next
 
-LabelTime2.text = Format(Date(sD[0], Val(sD[1]), Val(sD[2]), Val(sD[3]), Val(sD[4]), Val(sD[5])), "dddd d mmmm yyyy - hh:nn:ss")
-LabelDesc2.Text = UCase(Left(sDescription[SliderTime.value], 1)) & Mid(sDescription[SliderTime.value], 2)
-PictureBoxIcon.Picture = Picture.Load("/tmp" &/ sIcon[SliderTime.value] & ".png")
+LabelTime2.text = Format(Date(sD[0], Val(sD[1]), Val(sD[2]), Val(sD[3]), Val(sD[4]), Val(sD[5])), "dddd d") & Ordinal(sd[2])                        'Format the date
+LabelTime2.text &= Format(Date(sD[0], Val(sD[1]), Val(sD[2]), Val(sD[3]), Val(sD[4]), Val(sD[5])), " mmmm yyyy - hh:nn:ss t")                    'Format the date
+LabelDesc2.Text = UCase(Left(sDescription[SliderTime.value], 1)) & Mid(sDescription[SliderTime.value], 2)                                        'Display the 'Description' e.g. 'Light rain'
+Try PictureBoxIcon.Picture = Picture.Load("/tmp" &/ sIcon[SliderTime.value] & ".png")                                                            'Try and display the correct weather icon
+If Error Then                                                                                                                                    'If there is an error (i.e. 'wget' is not installed) then..
+  PictureBoxIcon.Stretch = True                                                                                                                  'Set stretch to True 
+  PictureBoxIcon.Width = 100                                                                                                                     'Set the PictureBox width
+Else                                                                                                                                             'Else
+  PictureBoxIcon.Stretch = False                                                                                                                 'Set stretch to False 
+  PictureBoxIcon.Width = 35                                                                                                                      'Set the PictureBox width
+Endif
 
-If Settings["Temp", "C"] = "C" Then LabelTempMax1.text = "Max " & Str(Int(Val(sTempMax[SliderTime.value]) - 273.15)) & "ºC"
-If Settings["Temp"] = "K" Then LabelTempMax1.text = "Max " & Str(Int(Val(sTempMax[SliderTime.value]))) & "ºK"
-If Settings["Temp"] = "F" Then LabelTempMax1.text = "Max " & Str(Int(Val(sTempMax[SliderTime.value]) * 9 / 5 - 459.67)) & "ºF"
+If Settings["Temp", "C"] = "C" Then LabelTempMax1.text = "Max " & Str(Int(Val(sTempMax[SliderTime.value]) - 273.15)) & "ºC"                      'Display the maximum tempreture in "C"
+If Settings["Temp"] = "K" Then LabelTempMax1.text = "Max " & Str(Int(Val(sTempMax[SliderTime.value]))) & "ºK"                                    'Display the maximum tempreture in "K"
+If Settings["Temp"] = "F" Then LabelTempMax1.text = "Max " & Str(Int(Val(sTempMax[SliderTime.value]) * 9 / 5 - 459.67)) & "ºF"                   'Display the maximum tempreture in "F"
 
-If Settings["Temp", "C"] = "C" Then LabelTempMin1.text = "Min " & Str(Int(Val(sTempMin[SliderTime.value]) - 273.15)) & "ºC"
-If Settings["Temp"] = "K" Then LabelTempMin1.text = "Min " & Str(Int(Val(sTempMin[SliderTime.value]))) & "ºK"
-If Settings["Temp"] = "F" Then LabelTempMin1.text = "Min " & Str(Int(Val(sTempMin[SliderTime.value]) * 9 / 5 - 459.67)) & "ºF"
+If Settings["Temp", "C"] = "C" Then LabelTempMin1.text = "Min " & Str(Int(Val(sTempMin[SliderTime.value]) - 273.15)) & "ºC"                      'Display the minimum tempreture in "C"
+If Settings["Temp"] = "K" Then LabelTempMin1.text = "Min " & Str(Int(Val(sTempMin[SliderTime.value]))) & "ºK"                                    'Display the minimum tempreture in "K"
+If Settings["Temp"] = "F" Then LabelTempMin1.text = "Min " & Str(Int(Val(sTempMin[SliderTime.value]) * 9 / 5 - 459.67)) & "ºF"                   'Display the minimum tempreture in "F"
 
-If Settings["Press", "K"] = "K" Then LabelPressure.text = "Pressure " & Format(sPressure[SliderTime.value], "0000") & " kPa"
-If Settings["Press"] = "H" Then LabelPressure.text = "Pressure " & Format(Str(Val(sPressure[SliderTime.value]) * 0.2952998751), "000") & " inHg"
+If Settings["Press", "K"] = "K" Then LabelPressure.text = "Pressure " & Format(sPressure[SliderTime.value], "0000") & " kPa"                     'Display the pressure in 'kPa'
+If Settings["Press"] = "H" Then LabelPressure.text = "Pressure " & Format(Str(Val(sPressure[SliderTime.value]) * 0.2952998751), "000") & " inHg" 'Display the pressure in 'inHg'
 
-LabelWindDir.text = "Wind\n" & WindDirection(Val(sWindDir[SliderTime.value])) & "\n"
-If Settings["Wind"] = "P" Then LabelWindDir.text &= Format(Str(Val(sWindSpeed[SliderTime.Value]) * 2.23694), "#") & " mph"
-If Settings["Wind", "M"] = "M" Then LabelWindDir.text &= Format(Str(Val(sWindSpeed[SliderTime.Value])), "#") & " m/s"
-If Settings["Wind"] = "K" Then LabelWindDir.text &= Format(Str(Val(sWindSpeed[SliderTime.Value]) * 3.6), "#") & " kph"
+LabelWindDir.text = "Wind\n" & WindDirection(Val(sWindDir[SliderTime.value])) & "\n"                                                             'Display the wind direction e.g. 'West'
+If Settings["Wind"] = "P" Then LabelWindDir.text &= Format(Str(Val(sWindSpeed[SliderTime.Value]) * 2.23694), "#") & " mph"                       'Display the wind speed in 'mph'
+If Settings["Wind", "M"] = "M" Then LabelWindDir.text &= Format(Str(Val(sWindSpeed[SliderTime.Value])), "#") & " m/s"                            'Display the wind speed in 'm/s'
+If Settings["Wind"] = "K" Then LabelWindDir.text &= Format(Str(Val(sWindSpeed[SliderTime.Value]) * 3.6), "#") & " kph"                           'Display the wind speed in 'kph'
 
-PictureBoxWind.Picture = Picture.Load("../" &/ WindDirection(Val(sWindDir[SliderTime.value])) & ".png")
+PictureBoxWind.Picture = Picture.Load("../" &/ WindDirection(Val(sWindDir[SliderTime.value])) & ".png")                                          'Display the wind direction arrow
 
 End
 
-Public Sub GetWeather() As Variant
-Dim sResult As String
-Dim hClient As HttpClient
+Public Sub GetWeather() As Variant                                            'Get the weather
+Dim sResult As String                                                         'To store the weather details
+Dim hClient As HttpClient                                                     'To create a HTTP Client
 
-hClient = New HttpClient As "hClient"
-With hClient
-  .URL = "http://api.openweathermap.org/data/2.5/forecast?id=" & Settings["sWID", "6620380"] & "&uk&APPID=bdb074a3b2f71d852f294da2e596c18f" 
-  .Async = False
-  .TimeOut = 60
-  .get
+hClient = New HttpClient As "hClient"                                         'Create a HTTP Client
+With hClient                                                                  'With the Client..
+  .URL = "http://api.openweathermap.org/data/2.5/forecast?id=" & 
+   Settings["sWID", "2643743"] & "&uk&APPID=bdb074a3b2f71d852f294da2e596c18f" 'Set up the URL
+  .Async = False                                                              'No asynchronous transmittion
+  .TimeOut = 60                                                               'Don't hang around waiting for more than 60 seconds
+  .get                                                                        'Get the data
 End With
 
-If Lof(hClient) Then sResult = Read #hClient, Lof(hClient)
+If Lof(hClient) Then sResult = Read #hClient, Lof(hClient)                    'When all the data is downloaded store it in sResult
 
-Return JSON.Decode(sResult)
-
-End
-
-Public Sub TimerGetWeather_Timer()
-
-SliderTime_Change
-TimerGetWeather.Delay = 60000
+Return JSON.Decode(sResult)                                                   'Return the decoded data
 
 End
 
-Public Sub WindDirection(fDeg As Float) As String
-Dim sDir As String[] = ["North", "Northeast", "East", "Southeast", "South", "Southwest", "West", "Northwest", "North"] 
+Public Sub TimerGetWeather_Timer()                                            'Weather timer
 
-Dim siCalc As Short
+SliderTime_Change                                                             'Run everything!
+TimerGetWeather.Delay = 60000                                                 'Set the delay to 60 mins
+If Not bOnceOnly And Args[1] = "-h" Then ButtonHide_Click                     'If the '-h' switch is used the program auto hides
+bOnceOnly = True                                                              'To ensure the above line is not used again
 
-If fDeg = 0 Or fDeg = 360 Then 
-  siCalc = 0
-Else
-  siCalc = (fDeg / 45) + 0.5
+End
+
+Public Sub WindDirection(fDeg As Float) As String                             'To better display the wind direction that arrives as degrees
+Dim sDir As String[] = ["North", "Northeast", "East", "Southeast", "South", "Southwest", "West", "Northwest", "North"] 'The wind directions
+Dim siCalc As Short                                                           'Used to calculate the wind direction
+
+If fDeg = 0 Or fDeg = 360 Then                                                'If degrees is 0 or 360 then 
+  siCalc = 0                                                                  'siCalc = 0 (i.e. 'North')
+Else                                                                          'Else..
+  siCalc = (fDeg / 45) + 0.5                                                  'Get it down to 1 of 8 directions
 Endif
 
-Return sDir[siCalc]
+Return sDir[siCalc]                                                           'Return the result e.eg 'Southeast'
 
 End
 
-Public Sub PictureBoxArrowRight_Enter()
+Public Sub PictureBoxArrowRight_Enter()                                       'If the mouse hovers over the 'Right arrow'
 
-bLR = True
-TimerSlider.Delay = 1
-TimerSlider.Start
-
-End
-
-Public Sub PictureBoxArrowLeft_Enter()
-
-bLR = False
-TimerSlider.Delay = 1
-TimerSlider.Start
+bLR = True                                                                    'bLR = True (i.e. Right)
+TimerSlider.Delay = 1                                                         'Set the timer delay to instant
+TimerSlider.Start                                                             'Start the timer
 
 End
 
-Public Sub PictureBoxArrowLeft_Leave()
+Public Sub PictureBoxArrowLeft_Enter()                                        'If the mouse hovers over the 'Left arrow'
 
-TimerSlider.Stop  
-TimerSlider.Delay = 1
+bLR = False                                                                   'bLR = True (i.e. Left)
+TimerSlider.Delay = 1                                                         'Set the timer delay to instant
+TimerSlider.Start                                                             'Start the timer
 
 End
 
-Public Sub PictureBoxArrowRight_Leave()
+Public Sub PictureBoxArrowRight_Leave()                                       'If the mouse stops hovering over the 'Right arrow'
   
-TimerSlider.Stop  
-TimerSlider.Delay = 1
+TimerSlider.Stop                                                              'Stop the timer
 
 End
 
-Public Sub TimerSlider_Timer()
+Public Sub PictureBoxArrowLeft_Leave()                                        'If the mouse stops hovering over the 'Left arrow'
 
-If bLR Then
-  Inc SliderTime.Value
-Else
-  Dec SliderTime.Value
+TimerSlider.Stop                                                              'Stop the timer
+
+End
+
+Public Sub TimerSlider_Timer()                                                'Timer to move the slider
+
+If bLR Then                                                                   'Which way to move the slider, if right then
+  Inc SliderTime.Value                                                        'Increase the slider value
+Else                                                                          'Else (it's left)
+  Dec SliderTime.Value                                                        'Decrease the slider value
 End If
-TimerSlider.Delay = 1000
+
+TimerSlider.Delay = 1000                                                      'Set the timer delay to 1 second
 
 End
 
-Public Sub ToolButtonPreferences_Click()
 
-Preferences.ShowModal
-SliderTime_Change
+Public Sub ButtonHide_Click()                                                 'If the 'Hide' button is clicked..
+
+TrayIcon1.Show                                                                'Show the Tray Icon
+Me.Hide                                                                       'Hide the Form
 
 End
 
-Public Sub ToolButtonAbout_Click()
+Public Sub mMenu_Click()                                                      'If the Tray Icon menu is clicked..
 
-About.Show
+If Last.Tag = "Close" Then                                                    'If 'Close' is selected then..
+  TrayIcon1.Delete                                                            'Delete the Tray Icon
+  Me.Close                                                                    'Close the program
+End If
+
+If Last.Tag = "Show" Then Me.Show                                             'If 'Show' is selectecd then show the program
+
+End
+
+Public Sub AllTools_Click()                                                   'If a toolbar button is clicked..
+
+Select Case Last.Tag                                                          'Get the Tag of the last item clicked
+  Case "Pref"                                                                 'If the Tag is "Pref" then
+    Preferences.ShowModal                                                     'Show the 'Preferences' Form
+    SliderTime_Change                                                         'Run everything!
+  Case "About"                                                                'If the Tag is "About" then
+    About.Show                                                                'Show the 'About' Form
+  Case "Location"                                                             'If the Tag is "Location" then
+    Location.ShowModal                                                        'Show the 'Location' Form
+    SliderTime_Change                                                         'Run everything!
+End Select
+
+End
+
+Public Sub Form_Close()                                                       'When the Form closes..
+
+TrayIcon1.Delete                                                              'Delete the Tray Icon
+Settings.Write(Me, "Window")                                                  'Store the window position and size
+
+End
+
+Public Sub Ordinal(siDay As Short) As String                                  'To get the Ordinal for the day e.g. 1st, 2nd, 3rd, 4th..
+Dim sReturn As String 
+
+Select Case siDay                                                             'To select the correct 'Ordinal' to use
+  Case 1, 21, 31                                                              'If the today is 1, 21 or 31 then..
+    sReturn = "st"                                                            'Select "st" (e.g. 1st)
+  Case 2, 22                                                                  'If the today is 2 or 22 then..
+    sReturn = "nd"                                                            'Select "nd" (e.g. 2nd)
+  Case 3, 23                                                                  'If the today is 3 or 23 then..
+    sReturn = "rd"                                                            'Select "rd" (e.g. 3rd)
+  Case Else                                                                   'If the 'Day' is none of the above then..
+    sReturn = "th"                                                            'The 'Ordinal' is "th" (e.g. 15th)
+End Select
+
+Return sReturn
 
 End

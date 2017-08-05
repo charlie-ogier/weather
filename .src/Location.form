@@ -15,6 +15,7 @@
     { CheckBoxCountry CheckBox
       MoveScaled(40,1,31,3)
       Mouse = Mouse.Pointing
+      ToolTip = ("Use the 2 digit country code e.g. ''GB', 'DE','US' etc.")
       Text = ("Search by country code")
     }
     { LabelSearch Label
@@ -35,6 +36,7 @@
     }
     { ButtonSearch Button
       MoveScaled(112,0,11,4)
+      ToolTip = ("Search the database")
       Text = Shortcut(("Search"), "S")
     }
   }
@@ -58,6 +60,7 @@
     MoveScaled(1,59,89,4)
     { ButtonCancel Button
       MoveScaled(2,0,11,4)
+      ToolTip = ("Close without making changes")
       Text = Shortcut(("Cancel"), "C")
     }
     { Panel2 Panel
@@ -79,6 +82,7 @@
     { ButtonSave Button
       MoveScaled(70,0,11,4)
       Enabled = False
+      ToolTip = ("Save the selected location")
       Text = Shortcut(("Save"), "S")
     }
   }
