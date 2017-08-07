@@ -7,7 +7,15 @@ Dummy=[2]
 Count=0
 
 [DebugWindow]
-Count=0
+Count=8
+DebugWindow[1]="vData"
+DebugWindow[2]="vData[\"list\"]"
+DebugWindow[3]="vData[\"list\"][0]"
+DebugWindow[4]="vData[\"list\"][0][\"main\"]"
+DebugWindow[5]="sTempMin"
+DebugWindow[6]="sTempMax"
+DebugWindow[7]="vData[\"list\"][10]"
+DebugWindow[8]="vData[\"list\"][10][\"main\"]"
 
 [DebugWindow/Media]
 Geometry=[0,14,224,280]
@@ -79,7 +87,10 @@ Geometry=[-8,398,224,280]
 Geometry=[0,14,224,900]
 
 [DebugWindow/sTempMax]
-Geometry=[-8,6,224,938]
+Geometry=[531,366,224,921]
+
+[DebugWindow/sTempMin]
+Geometry=[303,368,224,922]
 
 [DebugWindow/sTest]
 Geometry=[1010,92,224,280]
@@ -103,7 +114,7 @@ Geometry=[-8,231,224,280]
 Geometry=[925,215,224,280]
 
 [DebugWindow/vData]
-Geometry=[1561,130,245,280]
+Geometry=[1410,485,245,280]
 
 [DebugWindow/vData["city"]]
 Geometry=[1122,55,245,280]
@@ -112,16 +123,16 @@ Geometry=[1122,55,245,280]
 Geometry=[1523,257,245,740]
 
 [DebugWindow/vData["list"]]
-Geometry=[1663,493,245,280]
+Geometry=[1138,90,245,280]
 
 [DebugWindow/vData["list"][0]]
-Geometry=[1663,1,245,280]
+Geometry=[1082,469,245,280]
 
 [DebugWindow/vData["list"][0]["clouds"]]
 Geometry=[1170,96,245,280]
 
 [DebugWindow/vData["list"][0]["main"]]
-Geometry=[1414,1,245,280]
+Geometry=[1604,125,245,280]
 
 [DebugWindow/vData["list"][0]["weather"]]
 Geometry=[1618,464,245,740]
@@ -131,6 +142,12 @@ Geometry=[990,397,245,740]
 
 [DebugWindow/vData["list"][0]["wind"]]
 Geometry=[1678,280,245,280]
+
+[DebugWindow/vData["list"][10]]
+Geometry=[1144,96,245,280]
+
+[DebugWindow/vData["list"][10]["main"]]
+Geometry=[1336,144,245,280]
 
 [DebugWindow/vData["list"][1]]
 Geometry=[1514,267,245,740]
@@ -175,11 +192,11 @@ Geometry=[991,56,245,740]
 Path="weather.gambas"
 
 [OpenFile]
-File[1]="Dummy:0.2"
-Active=3
-File[2]=".src/FMain.form"
+File[1]=".src/FMain.form"
+Active=2
+File[2]=".src/FMain.class:0.38"
 Count=3
-File[3]=".src/FMain.class:0.218"
+File[3]=".src/About.form"
 
 [Watches]
 Count=2

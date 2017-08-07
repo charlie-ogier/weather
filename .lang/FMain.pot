@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: $(PACKAGE) $(VERSION)\n"
-"POT-Creation-Date: 2017-08-05 11:26 UTC\n"
+"POT-Creation-Date: 2017-08-07 15:56 UTC\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -42,15 +42,15 @@ msgstr ""
 msgid "Longitude"
 msgstr ""
 
-#: FMain.form:327
+#: FMain.form:326
 msgid "Slide to change the time/date"
 msgstr ""
 
-#: FMain.form:347
+#: FMain.form:346
 msgid "Hide this program. You can access it again from the Tray Icon"
 msgstr ""
 
-#: FMain.form:348
+#: FMain.form:347
 msgid "Hide"
 msgstr ""
 

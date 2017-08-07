@@ -147,7 +147,6 @@
         { PictureBoxIcon PictureBox
           MoveScaled(3,0,7,6)
           Expand = True
-          Picture = Picture["wget.png"]
           AutoResize = True
           Alignment = Align.Center
         }
@@ -246,7 +245,6 @@
   }
   { TimerGetWeather #Timer
     #MoveScaled(32,35)
-    Delay = 1
   }
   { TimerSlider #Timer
     #MoveScaled(26,16)

@@ -38,8 +38,8 @@ Next
 
 SliderTime.MaxValue = vData["list"].max                                       'Set the Slider Value to the limit of the data
 
-  If Not Exist("/tmp" &/ sIcon[SliderTime.value] & ".png") Then               'If the icon for the weather does not exist then..
-  Shell "cd /tmp && wget http://openweathermap.org/img/w/" & sIcon[SliderTime.value] & ".png" Wait  'Go and get it
+If Not Exist("/tmp" &/ sIcon[SliderTime.value] & ".png") Then                 'If the icon for the weather does not exist then..
+  GetIcon(sIcon[SliderTime.value])                                            'Go and get it
 Endif
 
 sDate = Replace(sTime[SliderTime.value], "-", ",")                            'Date comes as '2017-12-31 15:00:00' Get rid of the '-'
@@ -50,24 +50,17 @@ For Each sTemp In Split(sDate)                                                'S
   sD.Add(sTemp)                                                               'Add each item to sD
 Next
 
-LabelTime2.text = Format(Date(sD[0], Val(sD[1]), Val(sD[2]), Val(sD[3]), Val(sD[4]), Val(sD[5])), "dddd d") & Ordinal(sd[2])                        'Format the date
+LabelTime2.text = Format(Date(sD[0], Val(sD[1]), Val(sD[2]), Val(sD[3]), Val(sD[4]), Val(sD[5])), "dddd d") & Ordinal(sd[2])                     'Format the date
 LabelTime2.text &= Format(Date(sD[0], Val(sD[1]), Val(sD[2]), Val(sD[3]), Val(sD[4]), Val(sD[5])), " mmmm yyyy - hh:nn:ss t")                    'Format the date
 LabelDesc2.Text = UCase(Left(sDescription[SliderTime.value], 1)) & Mid(sDescription[SliderTime.value], 2)                                        'Display the 'Description' e.g. 'Light rain'
 Try PictureBoxIcon.Picture = Picture.Load("/tmp" &/ sIcon[SliderTime.value] & ".png")                                                            'Try and display the correct weather icon
-If Error Then                                                                                                                                    'If there is an error (i.e. 'wget' is not installed) then..
-  PictureBoxIcon.Stretch = True                                                                                                                  'Set stretch to True 
-  PictureBoxIcon.Width = 100                                                                                                                     'Set the PictureBox width
-Else                                                                                                                                             'Else
-  PictureBoxIcon.Stretch = False                                                                                                                 'Set stretch to False 
-  PictureBoxIcon.Width = 35                                                                                                                      'Set the PictureBox width
-Endif
 
-If Settings["Temp", "C"] = "C" Then LabelTempMax1.text = "Max " & Str(Int(Val(sTempMax[SliderTime.value]) - 273.15)) & "ºC"                      'Display the maximum tempreture in "C"
-If Settings["Temp"] = "K" Then LabelTempMax1.text = "Max " & Str(Int(Val(sTempMax[SliderTime.value]))) & "ºK"                                    'Display the maximum tempreture in "K"
+If Settings["Temp", "C"] = "C" Then LabelTempMax1.text = "Max " & Format(Str(Val(sTempMax[SliderTime.value]) - 273.15), "#.0") & "ºC"                      'Display the maximum tempreture in "C"
+If Settings["Temp"] = "K" Then LabelTempMax1.text = "Max " & Format(Str(Val(sTempMax[SliderTime.value])), "#.0") & "ºK"                                    'Display the maximum tempreture in "K"
 If Settings["Temp"] = "F" Then LabelTempMax1.text = "Max " & Str(Int(Val(sTempMax[SliderTime.value]) * 9 / 5 - 459.67)) & "ºF"                   'Display the maximum tempreture in "F"
 
-If Settings["Temp", "C"] = "C" Then LabelTempMin1.text = "Min " & Str(Int(Val(sTempMin[SliderTime.value]) - 273.15)) & "ºC"                      'Display the minimum tempreture in "C"
-If Settings["Temp"] = "K" Then LabelTempMin1.text = "Min " & Str(Int(Val(sTempMin[SliderTime.value]))) & "ºK"                                    'Display the minimum tempreture in "K"
+If Settings["Temp", "C"] = "C" Then LabelTempMin1.text = "Min " & Format(Str(Val(sTempMin[SliderTime.value]) - 273.15), "#.0") & "ºC"                      'Display the minimum tempreture in "C"
+If Settings["Temp"] = "K" Then LabelTempMin1.text = "Min " & Format(Str(Val(sTempMin[SliderTime.value])), "#.0") & "ºK"                                    'Display the minimum tempreture in "K"
 If Settings["Temp"] = "F" Then LabelTempMin1.text = "Min " & Str(Int(Val(sTempMin[SliderTime.value]) * 9 / 5 - 459.67)) & "ºF"                   'Display the minimum tempreture in "F"
 
 If Settings["Press", "K"] = "K" Then LabelPressure.text = "Pressure " & Format(sPressure[SliderTime.value], "0000") & " kPa"                     'Display the pressure in 'kPa'
@@ -97,6 +90,8 @@ End With
 
 If Lof(hClient) Then sResult = Read #hClient, Lof(hClient)                    'When all the data is downloaded store it in sResult
 
+                            File.Save(User.home &/ "weather.json", sResult)   ''TESTING ONLY
+
 Return JSON.Decode(sResult)                                                   'Return the decoded data
 
 End
@@ -107,6 +102,7 @@ SliderTime_Change                                                             'R
 TimerGetWeather.Delay = 60000                                                 'Set the delay to 60 mins
 If Not bOnceOnly And Args[1] = "-h" Then ButtonHide_Click                     'If the '-h' switch is used the program auto hides
 bOnceOnly = True                                                              'To ensure the above line is not used again
+If TrayIcon1.Visible = True Then WeatherIcon                                  'Go to the WeatherIcon routine if the TrayIcon is displayed
 
 End
 
@@ -127,16 +123,16 @@ End
 Public Sub PictureBoxArrowRight_Enter()                                       'If the mouse hovers over the 'Right arrow'
 
 bLR = True                                                                    'bLR = True (i.e. Right)
-TimerSlider.Delay = 1                                                         'Set the timer delay to instant
-TimerSlider.Start                                                             'Start the timer
+TimerSlider.Trigger                                                           'Trigger the timer 
+TimerSlider.start                                                             'Start the timer
 
 End
 
 Public Sub PictureBoxArrowLeft_Enter()                                        'If the mouse hovers over the 'Left arrow'
 
 bLR = False                                                                   'bLR = True (i.e. Left)
-TimerSlider.Delay = 1                                                         'Set the timer delay to instant
-TimerSlider.Start                                                             'Start the timer
+TimerSlider.Trigger                                                           'Trigger the timer 
+TimerSlider.start                                                             'Start the timer
 
 End
 
@@ -160,14 +156,13 @@ Else                                                                          'E
   Dec SliderTime.Value                                                        'Decrease the slider value
 End If
 
-TimerSlider.Delay = 1000                                                      'Set the timer delay to 1 second
-
 End
-
 
 Public Sub ButtonHide_Click()                                                 'If the 'Hide' button is clicked..
 
 TrayIcon1.Show                                                                'Show the Tray Icon
+SliderTime.value = 0                                                          'Reset the slider
+WeatherIcon                                                                   'Display the details on the TrayIcon
 Me.Hide                                                                       'Hide the Form
 
 End
@@ -179,7 +174,10 @@ If Last.Tag = "Close" Then                                                    'I
   Me.Close                                                                    'Close the program
 End If
 
-If Last.Tag = "Show" Then Me.Show                                             'If 'Show' is selectecd then show the program
+If Last.Tag = "Show" Then                                                     'If 'Show' is selectecd then..
+  Me.Show                                                                     'Show the program
+  TrayIcon1.Hide                                                              'Hide the TrayIcon
+End If
 
 End
 
@@ -219,6 +217,35 @@ Select Case siDay                                                             'T
     sReturn = "th"                                                            'The 'Ordinal' is "th" (e.g. 15th)
 End Select
 
-Return sReturn
+Return sReturn                                                                'Return the correct ordinal
+
+End
+
+Public Sub GetIcon(sID As String)
+Dim sResult As String                                                         'To store the weather details
+Dim hClient As HttpClient                                                     'To create a HTTP Client
+
+hClient = New HttpClient As "hClient"                                         'Create a HTTP Client
+With hClient                                                                  'With the Client..
+  .URL = "http://openweathermap.org/img/w/" & sID & ".png"                    'Set up the URL
+  .Async = False                                                              'No asynchronous transmittion
+  .TimeOut = 5                                                                'Don't hang around waiting for more than 5 seconds
+  .get                                                                        'Get the data (icon)
+End With
+
+If Lof(hClient) Then sResult = Read #hClient, Lof(hClient)                    'When all the data is downloaded store it in sResult
+
+File.Save("/tmp" &/ sID & ".png", sResult) 
+
+End
+
+Public Sub WeatherIcon()                                                      'Provide the details to display on the TrayIcon
+Dim sDesc As String = vData["list"][0]["weather"][0]["description"]           'Get the weather description
+Dim sIcon As String = "/tmp" &/ vData["list"][0]["weather"][0]["icon"] & ".png"  'Get the name of the icon to display
+
+If Not Exist(sIcon) Then GetIcon                                              'If the Icon does not exsist then get it!
+TrayIcon1.Picture = Picture.Load(sIcon)                                       'Display the weather icon in the TrayIcon
+sDesc = UCase(Left(sDesc, 1)) & Mid(sDesc, 2)                                 'Capitalise the 1st Letter of the Description
+TrayIcon1.Tooltip = sDesc                                                     'Display the Description in the TrayIcon ToolTip
 
 End
