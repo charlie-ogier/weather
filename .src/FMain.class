@@ -7,7 +7,7 @@ bOnceOnly As Boolean                                                          'S
 Public Sub Form_Open()                                                        'When the Form opens
 
 LabelVersion.Text = "Version 0.1.0"                                           'Display the version number
-TimerGetWeather.Start                                                         'Start the timer
+TimerGetWeather.Trigger                                                       'Start the timer
 Settings.Read(Me, "Window")                                                   'Get the window position and size
 
 End
@@ -29,8 +29,8 @@ For siCount = 0 To vData["list"].max                                          'F
   sTime.add(vData["list"][siCount]["dt_txt"])                                 'The time
   sDescription.Add(vData["list"][siCount]["weather"][0]["description"])       'The description
   sIcon.Add(vData["list"][siCount]["weather"][0]["icon"])                     'The weather icon
-  sTempMin.add(vData["list"][siCount]["main"]["temp_min"])                    'The minumim tempreture
-  sTempMax.add(vData["list"][siCount]["main"]["temp_max"])                    'The maximum tempreture
+  sTempMin.add(vData["list"][siCount]["main"]["temp_min"])                    'The minumim temperature
+  sTempMax.add(vData["list"][siCount]["main"]["temp_max"])                    'The maximum temperature
   sPressure.add(vData["list"][siCount]["main"]["pressure"])                   'The air pressure
   sWindSpeed.add(vData["list"][siCount]["wind"]["speed"])                     'The wind speed
   sWindDir.add(vData["list"][siCount]["wind"]["deg"])                         'The wind direction
@@ -50,19 +50,23 @@ For Each sTemp In Split(sDate)                                                'S
   sD.Add(sTemp)                                                               'Add each item to sD
 Next
 
-LabelTime2.text = Format(Date(sD[0], Val(sD[1]), Val(sD[2]), Val(sD[3]), Val(sD[4]), Val(sD[5])), "dddd d") & Ordinal(sd[2])                     'Format the date
-LabelTime2.text &= Format(Date(sD[0], Val(sD[1]), Val(sD[2]), Val(sD[3]), Val(sD[4]), Val(sD[5])), " mmmm yyyy - hh:nn:ss t")                    'Format the date
+LabelTime2.text = Format(Date(sD[0], sD[1], sD[2], sD[3], sD[4], sD[5]), "dddd d") & Ordinal(sd[2])                     'Format the date
+LabelTime2.text &= Format(Date(sD[0], sD[1], sD[2], sD[3], sD[4], sD[5]), " mmmm yyyy - hh:nn:ss t")                    'Format the date
 LabelDesc2.Text = UCase(Left(sDescription[SliderTime.value], 1)) & Mid(sDescription[SliderTime.value], 2)                                        'Display the 'Description' e.g. 'Light rain'
 Try PictureBoxIcon.Picture = Picture.Load("/tmp" &/ sIcon[SliderTime.value] & ".png")                                                            'Try and display the correct weather icon
 
-If Settings["Temp", "C"] = "C" Then LabelTempMax1.text = "Max " & Format(Str(Val(sTempMax[SliderTime.value]) - 273.15), "#.0") & "ºC"                      'Display the maximum tempreture in "C"
-If Settings["Temp"] = "K" Then LabelTempMax1.text = "Max " & Format(Str(Val(sTempMax[SliderTime.value])), "#.0") & "ºK"                                    'Display the maximum tempreture in "K"
-If Settings["Temp"] = "F" Then LabelTempMax1.text = "Max " & Str(Int(Val(sTempMax[SliderTime.value]) * 9 / 5 - 459.67)) & "ºF"                   'Display the maximum tempreture in "F"
+If Settings["Temp", "C"] = "C" Then LabelTempMax1.text = "Max " & Format(Str(Val(sTempMax[SliderTime.value]) - 273.15), "#.0") & "ºC"            'Display the maximum temperature in "C"
+If Settings["Temp"] = "K" Then LabelTempMax1.text = "Max " & Format(Str(Val(sTempMax[SliderTime.value])), "#.0") & "ºK"                          'Display the maximum temperature in "K"
+If Settings["Temp"] = "F" Then LabelTempMax1.text = "Max " & Str(Int(Val(sTempMax[SliderTime.value]) * 9 / 5 - 459.67)) & "ºF"                   'Display the maximum temperature in "F"
 
-If Settings["Temp", "C"] = "C" Then LabelTempMin1.text = "Min " & Format(Str(Val(sTempMin[SliderTime.value]) - 273.15), "#.0") & "ºC"                      'Display the minimum tempreture in "C"
-If Settings["Temp"] = "K" Then LabelTempMin1.text = "Min " & Format(Str(Val(sTempMin[SliderTime.value])), "#.0") & "ºK"                                    'Display the minimum tempreture in "K"
-If Settings["Temp"] = "F" Then LabelTempMin1.text = "Min " & Str(Int(Val(sTempMin[SliderTime.value]) * 9 / 5 - 459.67)) & "ºF"                   'Display the minimum tempreture in "F"
-
+If Date(Now) = Date(sD[0], sD[1], sD[2]) Then                                                                                                    'If the diapy date is the same as today then..
+  If Settings["Temp", "C"] = "C" Then LabelTempMin1.text = "Min " & Format(Str(Val(sTempMin[SliderTime.value]) - 273.15), "#.0") & "ºC"          'Display the minimum temperature in "C"
+  If Settings["Temp"] = "K" Then LabelTempMin1.text = "Min " & Format(Str(Val(sTempMin[SliderTime.value])), "#.0") & "ºK"                        'Display the minimum temperature in "K"
+  If Settings["Temp"] = "F" Then LabelTempMin1.text = "Min " & Str(Int(Val(sTempMin[SliderTime.value]) * 9 / 5 - 459.67)) & "ºF"                 'Display the minimum temperature in "F"
+Else                                                                                                                                             'Else..
+  LabelTempMin1.text = ""                                                                                                                        'Hide the 'Min' temp display see: - https://openweathermap.desk.com/customer/portal/articles/1633112-min-and-max-temperature-in-current-weather-api-and-forecast-api
+End If
+  
 If Settings["Press", "K"] = "K" Then LabelPressure.text = "Pressure " & Format(sPressure[SliderTime.value], "0000") & " kPa"                     'Display the pressure in 'kPa'
 If Settings["Press"] = "H" Then LabelPressure.text = "Pressure " & Format(Str(Val(sPressure[SliderTime.value]) * 0.2952998751), "000") & " inHg" 'Display the pressure in 'inHg'
 
@@ -90,7 +94,7 @@ End With
 
 If Lof(hClient) Then sResult = Read #hClient, Lof(hClient)                    'When all the data is downloaded store it in sResult
 
-                            File.Save(User.home &/ "weather.json", sResult)   ''TESTING ONLY
+'                            File.Save(User.home &/ "weather.json", sResult)   ''TESTING ONLY
 
 Return JSON.Decode(sResult)                                                   'Return the decoded data
 
@@ -235,17 +239,22 @@ End With
 
 If Lof(hClient) Then sResult = Read #hClient, Lof(hClient)                    'When all the data is downloaded store it in sResult
 
-File.Save("/tmp" &/ sID & ".png", sResult) 
+If sResult Then File.Save("/tmp" &/ sID & ".png", sResult)                    'If the icon is retrived then save it.
 
 End
 
-Public Sub WeatherIcon()                                                      'Provide the details to display on the TrayIcon
-Dim sDesc As String = vData["list"][0]["weather"][0]["description"]           'Get the weather description
-Dim sIcon As String = "/tmp" &/ vData["list"][0]["weather"][0]["icon"] & ".png"  'Get the name of the icon to display
+Public Sub WeatherIcon()                                                                        'Provide the details to display on the TrayIcon
+Dim sDesc As String = vData["list"][0]["weather"][0]["description"] & gb.NewLine                'Get the weather description
+Dim fMax_Temp As Float = vData["list"][0]["main"]["temp_max"]                                   'Get the temperature
+Dim sIcon As String = "/tmp" &/ vData["list"][0]["weather"][0]["icon"] & ".png"                 'Get the name of the icon to display
 
-If Not Exist(sIcon) Then GetIcon                                              'If the Icon does not exsist then get it!
-TrayIcon1.Picture = Picture.Load(sIcon)                                       'Display the weather icon in the TrayIcon
-sDesc = UCase(Left(sDesc, 1)) & Mid(sDesc, 2)                                 'Capitalise the 1st Letter of the Description
-TrayIcon1.Tooltip = sDesc                                                     'Display the Description in the TrayIcon ToolTip
+If Settings["Temp", "C"] = "C" Then sDesc &= "Max " & Format(fMax_Temp - 273.15, "#.0") & "ºC"  'Display the maximum temperature in "C"
+If Settings["Temp"] = "K" Then sDesc &= "Max " & Format(fMax_Temp, "#.0") & "ºK"                'Display the maximum temperature in "K"
+If Settings["Temp"] = "F" Then sDesc &= "Max " & Str(Int(fMax_Temp * 9 / 5 - 459.67)) & "ºF"    'Display the maximum temperature in "F"
+
+If Not Exist(sIcon) Then GetIcon                                                                'If the Icon does not exsist then get it!
+TrayIcon1.Picture = Picture.Load(sIcon)                                                         'Display the weather icon in the TrayIcon
+sDesc = UCase(Left(sDesc, 1)) & Mid(sDesc, 2)                                                   'Capitalise the 1st Letter of the Description
+TrayIcon1.Tooltip = sDesc                                                                       'Display the Description in the TrayIcon ToolTip
 
 End

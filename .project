@@ -13,6 +13,8 @@ Component=gb.gui.trayicon
 Component=gb.net
 Component=gb.net.curl
 Component=gb.web
+Description="Gets your weather from IOpenWEeatherMap and displays the details"
+Authors="Charlie Ogier (c) 2017"
 Arguments=[["-h"]]
 CurrentArgument=0
 Environment="GB_GUI=gb.gtk3"
@@ -20,4 +22,5 @@ TabSize=2
 Translate=1
 Language=en_GB
 CreateShortcut=1
+Vendor=cogier
 Packager=1

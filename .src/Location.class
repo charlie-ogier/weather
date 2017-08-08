@@ -143,12 +143,12 @@ End
 
 Public Sub ComboBoxCountry_KeyRelease()                                       'If a key is relesed while the cursor is in the ComboBox..
 
-If Key.code = Key.Enter Or Key.code = Key.Return Then ButtonSearch_Click      'If it is [Enter] or [Return] then clic the 'Search' button
+If Key.code = Key.Enter Or Key.code = Key.Return Then ButtonSearch_Click      'If it is [Enter] or [Return] then click the 'Search' button
 
 End
 
 Public Sub TextBoxSearch_KeyRelease()                                         'If a key is relesed while the cursor is in the TextBox..
 
-If Key.code = Key.Enter Or Key.code = Key.Return Then ButtonSearch_Click      'If it is [Enter] or [Return] then clic the 'Search' button
+If Key.code = Key.Enter Or Key.code = Key.Return Then ButtonSearch_Click      'If it is [Enter] or [Return] then click the 'Search' button
 
 End
