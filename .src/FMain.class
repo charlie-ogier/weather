@@ -7,6 +7,7 @@ bOnceOnly As Boolean                                                          'S
 Public Sub Form_Open()                                                        'When the Form opens
 
 LabelVersion.Text = "Version 0.1.0"                                           'Display the version number
+TimerGetWeather.Delay = 900000                                                'Set the delay 
 TimerGetWeather.Trigger                                                       'Start the timer
 Settings.Read(Me, "Window")                                                   'Get the window position and size
 
@@ -50,8 +51,8 @@ For Each sTemp In Split(sDate)                                                'S
   sD.Add(sTemp)                                                               'Add each item to sD
 Next
 
-LabelTime2.text = Format(Date(sD[0], sD[1], sD[2], sD[3], sD[4], sD[5]), "dddd d") & Ordinal(sd[2])                     'Format the date
-LabelTime2.text &= Format(Date(sD[0], sD[1], sD[2], sD[3], sD[4], sD[5]), " mmmm yyyy - hh:nn:ss t")                    'Format the date
+LabelTime2.text = Format(Date(sD[0], sD[1], sD[2], sD[3], sD[4], sD[5]), "dddd d") & Ordinal(sd[2])                                              'Format the date
+LabelTime2.text &= Format(Date(sD[0], sD[1], sD[2], sD[3], sD[4], sD[5]), " mmmm yyyy - hh:nn:ss t")                                             'Format the date
 LabelDesc2.Text = UCase(Left(sDescription[SliderTime.value], 1)) & Mid(sDescription[SliderTime.value], 2)                                        'Display the 'Description' e.g. 'Light rain'
 Try PictureBoxIcon.Picture = Picture.Load("/tmp" &/ sIcon[SliderTime.value] & ".png")                                                            'Try and display the correct weather icon
 
@@ -103,7 +104,6 @@ End
 Public Sub TimerGetWeather_Timer()                                            'Weather timer
 
 SliderTime_Change                                                             'Run everything!
-TimerGetWeather.Delay = 60000                                                 'Set the delay to 60 mins
 If Not bOnceOnly And Args[1] = "-h" Then ButtonHide_Click                     'If the '-h' switch is used the program auto hides
 bOnceOnly = True                                                              'To ensure the above line is not used again
 If TrayIcon1.Visible = True Then WeatherIcon                                  'Go to the WeatherIcon routine if the TrayIcon is displayed

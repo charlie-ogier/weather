@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: weather 3.9.2\n"
-"POT-Creation-Date: 2017-08-08 15:02 UTC\n"
+"POT-Creation-Date: 2017-08-09 15:54 UTC\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -15,6 +15,6 @@ msgid "Weather"
 msgstr ""
 
 #: .project:2
-msgid "Gets your weather from IOpenWEeatherMap and displays the details"
+msgid "Gets your weather from OpenWeatherMap and displays the details"
 msgstr ""
 
