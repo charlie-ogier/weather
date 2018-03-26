@@ -7,7 +7,11 @@ Dummy=[2]
 Count=0
 
 [DebugWindow]
-Count=0
+Count=1
+DebugWindow[1]="sFound"
+
+[DebugWindow/HBoxProgress]
+Geometry=[-8,-8,224,435]
 
 [DebugWindow/Media]
 Geometry=[0,14,224,280]
@@ -70,7 +74,7 @@ Geometry=[1525,23,335,559]
 Geometry=[-8,-8,224,280]
 
 [DebugWindow/sFound]
-Geometry=[-9,-8,257,515]
+Geometry=[1464,39,413,515]
 
 [DebugWindow/sIcon]
 Geometry=[-8,398,224,280]
@@ -106,19 +110,19 @@ Geometry=[-8,231,224,280]
 Geometry=[925,215,224,280]
 
 [DebugWindow/vData]
-Geometry=[1410,485,245,280]
+Geometry=[867,163,245,280]
 
 [DebugWindow/vData["city"]]
-Geometry=[1122,55,245,280]
+Geometry=[1304,325,245,280]
 
 [DebugWindow/vData["city"]["coord"]]
 Geometry=[1523,257,245,740]
 
 [DebugWindow/vData["list"]]
-Geometry=[1138,90,245,280]
+Geometry=[1108,156,245,280]
 
 [DebugWindow/vData["list"][0]]
-Geometry=[1307,696,245,280]
+Geometry=[1187,304,245,280]
 
 [DebugWindow/vData["list"][0]["clouds"]]
 Geometry=[1170,96,245,280]
@@ -127,10 +131,10 @@ Geometry=[1170,96,245,280]
 Geometry=[1604,125,245,280]
 
 [DebugWindow/vData["list"][0]["weather"]]
-Geometry=[1618,464,245,740]
+Geometry=[1431,178,245,280]
 
 [DebugWindow/vData["list"][0]["weather"][0]]
-Geometry=[990,397,245,740]
+Geometry=[1551,340,245,280]
 
 [DebugWindow/vData["list"][0]["wind"]]
 Geometry=[1678,280,245,280]
@@ -186,11 +190,11 @@ Path="weather.gambas"
 [OpenFile]
 File[1]=".src/FMain.form"
 Active=2
-File[2]=".src/FMain.class:93.10"
+File[2]=".src/FMain.class:8.292"
 Count=5
 File[3]=".src/About.form"
 File[4]=".src/Location.form"
-File[5]=".src/Location.class:92.132"
+File[5]=".src/Location.class:76.10"
 
 [Watches]
 Count=2

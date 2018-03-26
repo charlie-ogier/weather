@@ -61,6 +61,14 @@
     MoveScaled(1,5,9,0)
     Background = Color.Black
   }
+  { LabelWorking Label
+    MoveScaled(0,0,41,14)
+    Visible = False
+    Font = Font["Bold,+5"]
+    Expand = True
+    Text = ("Finding your location")
+    Alignment = Align.Center
+  }
   { VBox1 VBox
     MoveScaled(0,4,44,11)
     { HBox2 HBox
@@ -245,9 +253,11 @@
   }
   { TimerGetWeather #Timer
     #MoveScaled(32,35)
+    Enabled = True
   }
   { TimerSlider #Timer
     #MoveScaled(26,16)
+    Delay = 2000
   }
   { TrayIcon1 #TrayIcon
     #MoveScaled(22,34)

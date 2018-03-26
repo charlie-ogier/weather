@@ -84,6 +84,16 @@ Public Sub GetWeather() As Variant                                            'G
 Dim sResult As String                                                         'To store the weather details
 Dim hClient As HttpClient                                                     'To create a HTTP Client
 
+If Not Settings["sWID"] Then                                                  'If there is no location setting then
+  VBox1.Visible = False                                                       'Hide VBox1
+  LabelWorking.Visible = True                                                 'Show the "Finding location" Label
+  Wait 0.25                                                                   'Wait
+  Settings["sWID"] = GetLocation()                                            'Get the location from the GetLocation routine
+  LabelWorking.Visible = False                                                'Hide the "Finding location" Label
+  VBox1.Visible = True                                                        'Show VBox1
+  Wait                                                                        'Once around the 'Event' loop
+Endif
+
 hClient = New HttpClient As "hClient"                                         'Create a HTTP Client
 With hClient                                                                  'With the Client..
   .URL = "http://api.openweathermap.org/data/2.5/forecast?id=" & 
@@ -98,6 +108,51 @@ If Lof(hClient) Then sResult = Read #hClient, Lof(hClient)                    'W
 '                            File.Save(User.home &/ "weather.json", sResult)   ''TESTING ONLY
 
 Return JSON.Decode(sResult)                                                   'Return the decoded data
+
+End
+
+Public Sub GetLocation() As String                                            'Attempt to find your location from your external IP address
+Dim sCities As String[] = Split(File.Load("../cities.csv"), gb.NewLine)       'Open the list of locations file
+Dim sGetRidOf As String[] = ["/", Chr(34)]                                    'Undesirable items (to be removed later)
+Dim sFound As New String[]                                                    'To store any found locations
+Dim sIP, sLocation, sPlace, sCountyCode, sTemp, sReturn As String             'Various strings
+
+Shell "wget -qO- http://ipecho.net/plain" To sIP                              'Find your external IP address
+'sIP = "174.44.64.226"
+'sIp = "192.227.171.80"
+Shell "cd /tmp && wget http://ip-api.com/csv/" & sIP Wait                     'Change to '/tmp' folder and ask 'ip-api' to download your location details
+sLocation = File.Load("/tmp/" & sIp)                                          'Load the downloaded file in to sLocation
+
+For Each sTemp In sGetRidOf                                                   'Loop to remove undesirable characters
+  sLocation = Replace(sLocation, sTemp, "")                                   'Remove the item
+Next
+
+sLocation = Replace(sLocation, ",st ", "Saint ", gb.IgnoreCase)               'Change 'st' to 'Saint'
+
+sPlace = Split(sLocation)[5]                                                  'Split out the place e.g London 
+If Trim(sPlace) = "" Then sPlace = Split(sLocation)[4]                        'If there is no data above try the 2nd place
+sCountyCode = Split(sLocation)[2]                                             'Split out the country code e.g. GB
+
+For Each sLocation In sCities                                                 'Loop through all the places in the location file
+  If InStr(sLocation, sPlace) Then sFound.Add(sLocation)                      'If a match is found add it to sFound
+Next
+
+For Each sLocation In sFound                                                  'Loop through all the 'Found' details
+  If InStr(Trim(Split(sLocation)[1]), sCountyCode) Then sReturn = Split(sLocation)[0] 'If the line includes the country code then sReturn = the 'id' number e.g. London = 2643743
+Next
+
+If Trim(sReturn) = "" Then                                                    'If not value is found then.. 
+  Message.Error("Failed to find your location." &
+    "\nPlease click On the 'Select your location' toolbar button", "OK")      'Put up a message
+  Return                                                                      'Get out of here
+Else                                                                          'Else..
+  Return sReturn                                                              'Return the 'id' details
+Endif
+
+ Catch                                                                        'If it all goes horribly wrong then
+  Message.Error("Failed to find your location." & 
+   "\nPlease click on the 'Select your location' toolbar button", "OK")       'Put up a message
+  Return                                                                      'Get out of here
 
 End
 

@@ -8,7 +8,7 @@ Public Sub Form_Open()                                                        'W
 Dim sTemp, sHold As String                                                    'Temp strings
 Dim sCountries As New String[]                                                'To store Country codes (GB, DE, US etc)
 
-For Each sTemp In Split(File.Load("../cities.csv"), gb.NewLine)               'Load the 'city.csv' file and split it by newlines
+For Each sTemp In Split(File.Load("../cities.csv"), gb.NewLine)               'Load the 'cities.csv' file and split it by newlines
   If Not sTemp Then Continue                                                  'If there is no data go to the next iteration of the loop
   sData.Add(sTemp)                                                            'Add the locations to sData
 Next
